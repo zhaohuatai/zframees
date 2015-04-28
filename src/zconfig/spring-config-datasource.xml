@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:cache="http://www.springframework.org/schema/cache" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/jee 
+       http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd"
+       default-lazy-init="true">
+
+	<description>dataSource</description>
+	
+	
+	<context:property-placeholder location="classpath*:/hibernate-mysql.properties" />
+	
+	<bean id="dataSource" class="org.zht.framework.spring.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="dataSourceDruid" value-ref="dataSourceDruid" />
+				<entry key="c3p0dataSource1" value-ref="c3p0dataSource1" />
+				<entry key="c3p0dataSource2" value-ref="c3p0dataSource2" />
+				<entry key="c3p0dataSource3" value-ref="c3p0dataSource3" />
+			</map>
+		</property>
+		<property name="defaultTargetDataSource" ref="dataSourceDruid" />
+	</bean>
+
+	 
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref ="dataSource"/>
+		<property name="packagesToScan" value="com.zht.project.*.*,com.zht.common.*.*" />
+		<property name="hibernateProperties">
+			<props>
+				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				  <prop key="current_session_context_class">thread</prop>
+				  <prop key="hibernate.jdbc.fetch_size">50</prop>
+                  <prop key="hibernate.jdbc.batch_size">30</prop>
+                  <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+              	  <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+      			
+              	  <prop key="hibernate.cache.use_query_cache">true</prop>  
+              	  <prop key="hibernate.cache.use_second_level_cache">true</prop> 
+               	  <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>	<!--  --> 
+			 
+			 	 <prop key="hibernate.cache.use_structured_entries">true</prop>
+       		 	 <prop key="hibernate.cache.provider_configuration_file_resource_path">WEB-INF/classes/ehcache.xml</prop>
+        		 <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
+       <property name="dataSource" ref="dataSource"/>
+   </bean> 
+   <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+       <property name="dataSource" ref="dataSource"/>
+   </bean> 
+<!-- 配置事务管理 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+ <!-- 配置注解实现管理事务 注意@Transactional(RollbackFor=Exception.clas)-->
+	<tx:annotation-driven transaction-manager="transactionManager" 	proxy-target-class="true"  />
+
+
+	<bean id="dataSourceDruid"  class="com.alibaba.druid.pool.DruidDataSource" 
+									init-method="init" destroy-method="close">
+        <property name="url" value="${connection.url}"/>
+        <property name="username" value="${connection.username}"/>
+       <!-- java -cp druid-1.0.9.jar com.alibaba.druid.filter.config.ConfigTools xxxxxx  -->
+        <property name="password" value="bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA=="/>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${druid.initialSize}"/>
+        <property name="minIdle" value="${druid.minIdle}"/>
+        <property name="maxActive" value="${druid.maxActive}"/>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${druid.maxWait}"/>
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${druid.timeBetweenEvictionRunsMillis}" />
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${druid.minEvictableIdleTimeMillis}" />
+
+        <property name="validationQuery" value="${druid.validationQuery}" />
+        <property name="testWhileIdle" value="${druid.testWhileIdle}" />
+        <property name="testOnBorrow" value="${druid.testOnBorrow}" />
+        <property name="testOnReturn" value="${druid.testOnReturn}" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小  如果用Oracle，则把poolPreparedStatements配置为true，mysql可以配置为false。-->
+        <property name="poolPreparedStatements" value="${druid.poolPreparedStatements}" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="${druid.maxPoolPreparedStatementPerConnectionSize}" />
+
+        <!-- 配置监控统计拦截的filters,,关闭wall 防火墙，为了方便拼接sql -->
+        <property name="filters" value="${druid.filters}" />
+        <property name="connectionProperties" value="config.decrypt=true" />
+	</bean>
+	
+
+	<!-- 数据源,支持多数据源 -->
+	<bean id="c3p0dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${connection.driver_class}" />
+		<property name="jdbcUrl" value="${connection.url}" />
+		<property name="user" value="${connection.url}" />
+		<property name="password" value="${connection.password}" />
+		<property name="initialPoolSize">
+			<value>10</value>
+		</property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="30" />
+		<property name="acquireIncrement" value="5" />
+		<property name="maxIdleTime" value="10" />
+		<property name="maxStatements" value="0" />
+	</bean>
+
+	<bean id="c3p0dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${connection.driver_class}" />
+		<property name="jdbcUrl" value="${connection.url}" />
+		<property name="user" value="${connection.url}" />
+		<property name="password" value="${connection.password}" />
+		<property name="initialPoolSize">
+			<value>10</value>
+		</property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="30" />
+		<property name="acquireIncrement" value="5" />
+		<property name="maxIdleTime" value="10" />
+		<property name="maxStatements" value="0" />
+	</bean>
+
+	<bean id="c3p0dataSource3" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${connection.driver_class}" />
+		<property name="jdbcUrl" value="${connection.url}" />
+		<property name="user" value="${connection.url}" />
+		<property name="password" value="${connection.password}" />
+		<property name="initialPoolSize">
+			<value>10</value>
+		</property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="30" />
+		<property name="acquireIncrement" value="5" />
+		<property name="maxIdleTime" value="10" />
+		<property name="maxStatements" value="0" />
+	</bean>
+</beans>

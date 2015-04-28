@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:cache="http://www.springframework.org/schema/cache" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/jee 
+       http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd"
+       default-lazy-init="true">
+       
+       
+	    <!-- 类型转换及数据格式化 -->
+	    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+	     <property name="registerDefaultFormatters" value="false" />
+	        <property name="formatters">
+	            <set>
+	                <bean class="org.springframework.format.number.NumberFormatAnnotationFormatterFactory" />
+	            </set>
+	        </property>
+	        <property name="formatterRegistrars">
+	            <set>
+	                <bean class="org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar">
+	                    <property name="dateFormatter">
+	                        <bean class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
+	                            <property name="pattern" value="yyyy-MM-dd"/>
+	                        </bean>
+	                    </property>
+	                    <property name="dateTimeFormatter">
+	                        <bean class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
+	                            <property name="pattern" value="yyyy-MM-dd HH:mm:ss"/>
+	                        </bean>
+	                    </property>
+	                    <property name="timeFormatter">
+	                        <bean class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
+	                            <property name="pattern" value="HH:mm:ss"/>
+	                        </bean>
+	                    </property>
+	                </bean>
+	            </set>
+	        </property>
+	    </bean>
+	    <!-- 直接把id转换为entity 必须非lazy否则无法注册 -->
+	    <bean id="domainClassConverter" class="org.springframework.data.repository.support.DomainClassConverter">
+	        <constructor-arg ref="conversionService"/>
+	    </bean>
+    </beans>

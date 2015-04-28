@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee web-jsptaglibrary_2_0.xsd">
+	<tlib-version>1.0</tlib-version>
+	<short-name>zht</short-name>
+	<uri>http://www.zhtframework.com/zht</uri>
+	
+	<!-- common -->
+		<tag>
+		<name>yesOrNoSelect</name>
+		<tag-class>com.zht.framework.tags.common.YesOrNoSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>yesVlaue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>yesVlaue</description>
+		</attribute>
+		<attribute>
+			<name>noValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>noValue</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+		
+	</tag>
+	
+		<tag>
+		<name>queryTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.QueryTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+		
+	</tag>
+	
+	
+	
+		<tag>
+		<name>lookUpTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.LookUpTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+		
+	</tag>
+	
+	
+	<tag>
+		<name>queryConditionSelect</name>
+		<tag-class>com.zht.framework.tags.common.QueryConditionSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+		
+	</tag>
+	
+	
+	
+	
+		<tag>
+		<name>editTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.EditTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>
+			<attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>onchange </description>
+		</attribute>		
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+	</tag>
+	
+	
+	
+		<tag>
+		<name>lookUpTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.LookUpTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+		
+	</tag>
+		
+		<tag>
+		<name>validationTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.ValidationTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+	</tag>	
+	
+	
+	
+	
+			<tag>
+		<name>relationTypeSelect</name>
+		<tag-class>com.zht.framework.tags.common.RelationTypeSelect</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>宽度</description>
+		</attribute>
+		<attribute>
+			<name>cssClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>CSS Class</description>
+		</attribute>	
+		<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>	
+		<attribute>
+			<name>hasEmptyChose</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChose</description>
+		</attribute>					
+	</tag>	
+	
+	
+	
+	
+	
+	
+	<!-- authLinkButton -->
+
+	<tag>
+		<name>authButton</name>
+		<tag-class>com.zht.common.tag.easyui.AuthLinkButton</tag-class>
+		<body-content>empty</body-content>
+	<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		<attribute>
+			<name>iconCls</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>iconCls</description>
+		</attribute>
+		
+		<attribute>
+			<name>plain</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>plain</description>
+		</attribute>
+		<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>onclick</description>
+		</attribute>
+		<attribute>
+			<name>text</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>text</description>
+		</attribute>	
+		<attribute>
+			<name>roleCode</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>roleCode</description>
+		</attribute>
+		<attribute>
+			<name>permitCode</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>permitCode</description>
+		</attribute>
+	</tag>	
+	
+		
+	</taglib>

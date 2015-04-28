@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:cache="http://www.springframework.org/schema/cache" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/jee 
+       http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/cache 
+       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd"
+       default-lazy-init="true">	
+	<!-- 使用 annotation --> 
+	<context:annotation-config />	
+	
+	<!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 --> 
+	<context:component-scan base-package="com.zht.project,com.zht.common" />
+	<aop:aspectj-autoproxy  proxy-target-class="true"  />
+     <import resource="zconfig/spring-config-datasource.xml"/>
+ 	 <import resource="zconfig/spring-config-cache.xml"/>
+ 	   
+     <import resource="zconfig/spring-config-conversion.xml"/>
+     <import resource="zconfig/spring-config-validator.xml"/>
+     <import resource="zconfig/spring-config-message.xml"/>
+     <import resource="zconfig/spring-config-captcha.xml"/>
+     
+	<import resource="zconfig/spring-config-common.xml"/>
+	<import resource="zconfig/spring-config-shiro.xml"/> 
+	<!--
+	<import resource="zconfig/spring-config-task.xml"/>
+	   -->
+<bean id="dataAuthMapSource" class="com.zht.common.dauth.util.DataAuthMapSource" lazy-init="false"/>
+<bean  class="com.zht.common.dauth.util.DataAuthParser" />
+
+</beans>
+
+
+
+
+ <!-- AOP配置事物 
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="query*" read-only="true" propagation="REQUIRED" />  
+            <tx:method name="delete*"  propagation="REQUIRED" rollback-for="Exception" />  
+            <tx:method name="update*" propagation="REQUIRED"  rollback-for="Exception" />  
+            <tx:method name="insert*" propagation="REQUIRED"  rollback-for="Exception" />  
+            <tx:method name="*" propagation="REQUIRED"  rollback-for="Exception" />  
+        </tx:attributes>  
+    </tx:advice>  
+      
+
+    <aop:config>  
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.zht..service.*.*(..))"/>  
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>  
+    </aop:config> 
+    -->  

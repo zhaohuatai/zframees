@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="FILE"
+		class="org.apache.log4j.RollingFileAppender">
+		<!-- 设置通道file和输出方式：org.apache.log4j.RollingFileAppender -->
+		<param name="File" value="D:/zhtframework.txt" /><!-- 设置File参数：日志输出文件名 -->
+		<param name="Append" value="true" /><!-- 设置是否在重新启动服务时，在原有日志的基础添加新日志 -->
+		<param name="MaxBackupIndex" value="1" />
+		<param name="MaxFileSize" value="1500KB" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %p %c - %m%n" /><!-- 设置输出文件项目和格式 -->
+		</layout>
+	</appender>
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<!-- 设置监视器输出方式 -->
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern"
+				value="%-d{yyyy-MM-dd HH:mm:ss,SSS} [%c]-[%p] %m%n" />
+		</layout>
+		<!--滤镜设置输出的级别-->
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="info" />
+			<param name="levelMax" value="info" />
+			<param name="AcceptOnMatch" value="true" />
+		</filter>
+	</appender>
+
+	<root><!-- 设置接收所有输出的通道 -->
+		<priority value="info" /><!-- info  -->
+		<appender-ref ref="FILE" /><!-- 与前面的通道id相对应 -->
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</log4j:configuration>
+

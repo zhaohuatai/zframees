@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        http://www.springframework.org/schema/aop 
+          http://www.springframework.org/schema/aop/spring-aop.xsd">
+        
+    <!-- 启动自动扫描该包下所有的Bean(例如@Controller)  自动扫描且只扫描@Controller -->
+	<context:component-scan base-package=
+	"com.zht.common,com.zht.project" 
+		use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+  		<!-- 
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" /> 
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component" /> 
+  		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" /> 
+  		 -->
+	</context:component-scan>
+	
+    <!-- 配置静态资源 -->  
+    <mvc:resources location="/resources/" mapping="/resources/**" cache-period="1800" />
+    
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">  
+	     <property name="urlMap">  
+	         <map>  
+	              <entry key="/resources/**" value="myResourceHandler" />  
+	         </map>  
+	     </property>  
+	     <property name="order" value="100000" />         
+	</bean>  
+	
+	<bean id="myResourceHandler" name="myResourceHandler"  
+	      class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">  
+	      <property name="locations" value="/resources/" />  
+	      <property name="supportedMethods">  
+	         <list>  
+	            <value>GET</value>  
+	            <value>HEAD</value>  
+	            <value>POST</value>  
+	         </list>  
+	     </property>  
+	</bean>
+    <!-- 采用注解方式配置MVC -->  
+    <!-- <mvc:annotation-driven/> -->
+    <mvc:annotation-driven  
+    		 validator="validator"
+             conversion-service="conversionService"
+             content-negotiation-manager="contentNegotiationManager"
+             enable-matrix-variables="true">
+           
+      <!-- 异步支持 默认30秒超时 --> 
+       <mvc:async-support default-timeout="30000"/>
+       
+    <mvc:message-converters register-defaults="true">
+            <!-- StringHttpMessageConverter编码为UTF-8，防止乱码 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+                <property name = "supportedMediaTypes">
+                    <list>
+                        <bean class="org.springframework.http.MediaType">
+                            <constructor-arg index="0" value="text"/>
+                            <constructor-arg index="1" value="plain"/>
+                            <constructor-arg index="2" value="UTF-8"/>
+                        </bean>
+                          <bean class="org.springframework.http.MediaType">
+                            <constructor-arg index="0" value="*"/>
+                            <constructor-arg index="1" value="*"/>
+                            <constructor-arg index="2" value="UTF-8"/>
+                        </bean>
+                    </list>
+                </property>
+            </bean>
+
+           <!--  
+             <bean  id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+             <property name="supportedMediaTypes">
+                    <list>
+                         <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+             </bean>
+             -->
+              <!-- <value>DisableCircularReferenceDetect</value> -->
+             <bean id="fastJsonHttpMessageConverter" class="org.zht.framework.web.converter.MappingFastjsonHttpMessageConverter">
+          
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                         <value>*/*;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="features">
+			        <list>
+			            <value>WriteMapNullValue</value>
+			            <value>WriteNullListAsEmpty</value>
+			            <value>QuoteFieldNames</value>
+			            <value>WriteNullStringAsEmpty</value>
+			            <value>WriteDateUseDateFormat</value>
+			        </list>
+			    </property>
+            </bean> 
+            
+        </mvc:message-converters>
+		
+        <mvc:argument-resolvers>
+            <bean class="org.zht.framework.web.bind.resolver.FormModelMethodArgumentResolver"/>
+        </mvc:argument-resolvers>
+    </mvc:annotation-driven> 
+    
+    
+    <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">  
+     <!-- 扩展名至mimeType的映射,即 /user.json => application/json -->
+	    <property name="favorPathExtension" value="true" />  
+	     <!-- 用于开启 /userinfo/123?format=json 的支持 -->
+	    <property name="favorParameter" value="true" /> 
+	    <property name="parameterName" value="format"/>
+	      <!-- 是否忽略Accept Header -->
+	    <property name="ignoreAcceptHeader" value="true"/>
+	       <!--
+	    <property name="defaultContentType" value="text/html;charset=UTF-8"/>  
+   			-->
+    <property name="mediaTypes" >  
+        <value>  
+            json=application/json;charset=UTF-8  
+            xml=application/xml;charset=UTF-8 
+            html=text/html;charset=UTF-8 
+            text=application/text;charset=UTF-8 
+            *=*/* 
+        </value>  
+    </property>  
+</bean> 
+   <!-- ========================= VIEW定义 ========================= -->
+    <!-- 内容协商视图解析器；根据客户端的不同的请求决定不同的 view进行响应, 如 /blog/1.json /blog/1.xml -->
+    <!-- 会自动根据解析的contentType来决定使用哪个视图解析器（默认使用整个web应用中的viewResolver） -->
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver" p:order="0">
+        <!-- 内容协商管理器 用于决定media type -->
+        <property name="contentNegotiationManager" ref="contentNegotiationManager"/>
+        <!-- 默认视图 放在解析链最后 -->
+        <property name="defaultViews">
+            <list>
+                <!--<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>-->
+                <bean class="com.alibaba.fastjson.support.spring.FastJsonJsonView" />
+                <!--<bean class="org.springframework.web.servlet.view.xml.MarshallingView"/>-->
+            </list>
+        </property>
+    </bean>
+      <!-- jsp视图解析器 -->  
+    <bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="contentType" value="text/html;charset=utf-8" />  
+        <property name="prefix" value="/WEB-INF/jsp/" />  
+        <property name="suffix" value=".jsp" />  
+        <property name="order" value="1" />  
+    </bean> 
+    <!-- 配置freeMarker视图解析器 
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">  
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />  
+        <property name="contentType" value="text/html;charset=utf-8" />  
+        <property name="cache" value="true" />  
+        <property name="suffix" value=".ftl" />  
+        <property name="order" value="2" />  
+  
+        <property name="requestContextAttribute" value="request" />  
+        <property name="exposeRequestAttributes" value="true" />  
+        <property name="exposeSessionAttributes" value="true" />  
+        <property name="exposeSpringMacroHelpers" value="true" />  
+    </bean>   
+ 	-->  
+  <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="-1"/>
+    </bean>
+       <!-- 3Servlet文件上传解析器
+    <bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</bean>
+	 -->
+	 
+     <!-- restTemplate 
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">  
+        <property name="messageConverters" ref="messageConverters">  
+        </property>  
+    </bean>  
+    -->  
+ 
+      <!-- 总错误处理
+    <bean id="exceptionResolver"
+        class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="defaultErrorView">
+            <value>/error/error</value>
+        </property>
+        <property name="defaultStatusCode">
+            <value>500</value>
+        </property>
+        <property name="warnLogCategory">
+            <value>org.springframework.web.servlet.handler.SimpleMappingExceptionResolver
+            </value>
+        </property>
+    </bean>
+     -->
+     <!-- 拦截器配置 -->
+<mvc:interceptors>
+    <mvc:interceptor>
+        <mvc:mapping path="/**"/>
+        <bean class="org.zht.framework.interceptors.TokenInterceptor"/>
+    </mvc:interceptor>
+    
+    <mvc:interceptor>
+        <mvc:mapping path="/**"/>
+        <bean class="com.zht.common.dauth.intercetors.AppRequestInterceptor"/>
+    </mvc:interceptor>
+    
+    <!-- 拦截器配 置
+    <mvc:interceptor>
+        <mvc:mapping path="/**"/>
+        <bean class="org.zht.framework.interceptors.LogInterceptor"/>
+    </mvc:interceptor>
+    -->
+</mvc:interceptors>
+
+
+ <aop:aspectj-autoproxy  proxy-target-class="true"  />
+    <!-- shiro配置  不继承 applicantionContext 所以添加AOP配置 -->
+      <aop:config proxy-target-class="true"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    
+</beans>

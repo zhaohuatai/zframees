@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 
+scan:配置文件如果发生改变，将会被重新加载，
+scanPeriod:设置监测配置文件是否有修改的时间间隔，如果没有给出时间单位，默认单位是毫秒。当scan为true时，此属性生效。默认的时间间隔为1分钟。
+debug:当此属性设置为true时，将打印出logback内部日志信息，实时查看logback运行状态。默认值为false。
+ -->
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+ <property name="APP_Name" value="default" /><!-- 用来定义变量值的标签， -->
+ <property name="log.dir" value="D:/zhtframeworklog" />
+
+ <timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss"/><!-- 获取时间戳字符串 -->
+<contextName>${default}</contextName>  <!-- 默认上下文名称为“default”。但可以使用<contextName>设置成其他名字，用于区分不同应用程序的记录。一旦设置，不能修改。 -->
+<!-- 
+appender 是负责写日志的组件 ,,有两个必要属性name和class。name指定appender名称，class指定appender的全限定名。
+<encoder>：对日志进行格式化
+ -->
+    <!-- 控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+       <layout class="ch.qos.logback.classic.PatternLayout"> 
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </layout>    
+    </appender>
+    <!-- 出错日志 appender  -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <!-- log.dir 在maven profile里配置 -->
+            <fileNamePattern>${log.dir}/zht-error-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <!-- 日志最大的历史 天 -->
+            <maxHistory>366</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <!-- 访问日志 appender  -->
+    <appender name="ACCESS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <fileNamePattern>${log.dir}/zht-operation-%d{yyyy-MM-dd}.log</fileNamePattern>
+            
+            <maxHistory>366</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+<!-- 
+也是<loger>元素，但是它是根loger。只有一个level属性，应为已经被命名为"root".
+level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。默认是DEBUG。
+
+ -->
+    <root level="info"/>
+<!-- 
+loger:用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>,仅有一个name属性，一个可选的level和一个可选的addtivity属性。
+	loger=: name:用来指定受此loger约束的某一个包或者具体的某一个类。
+	loger=: level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，还有一个特俗值INHERITED或者同义词NULL,如果未设置此属性，那么当前loger将会继承上级的级别。
+ 	loger=: addtivity:是否向上级loger传递打印信息。默认是true。
+ 	没有设置appender，此loger本身不打印任何信息。
+<loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
+ -->
+    <!---->
+    <logger name="org.*" level="debug">
+       <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <!--错误日志-->
+    <logger name="sys-error" level="info">
+        <appender-ref ref="ERROR"/>
+    </logger>
+    <!--访问日志-->
+    <logger name="sys_operation" level="info">
+        <appender-ref ref="ACCESS"/>
+    </logger>
+
+</configuration>
+
+
+

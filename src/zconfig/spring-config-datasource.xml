@@ -8,17 +8,17 @@
     xmlns:tx="http://www.springframework.org/schema/tx"
     xmlns:cache="http://www.springframework.org/schema/cache" 
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
-       http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/jee 
-       http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+       http://www.springframework.org/schema/jee/spring-jee.xsd
        http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/aop/spring-aop.xsd
        http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/tx
-       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/tx/spring-tx.xsd
        http://www.springframework.org/schema/cache 
-       http://www.springframework.org/schema/cache/spring-cache-4.0.xsd"
+       http://www.springframework.org/schema/cache/spring-cache.xsd"
        default-lazy-init="true">
 
 	<description>dataSource</description>
@@ -41,7 +41,10 @@
 	 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref ="dataSource"/>
-		<property name="packagesToScan" value="com.zht.project.*.*,com.zht.common.*.*" />
+		<property name="packagesToScan" value="
+		com.zht.project.*.*,
+		com.zht.common.*.*,
+		com.lets.doit.ptj.*.*" />
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>

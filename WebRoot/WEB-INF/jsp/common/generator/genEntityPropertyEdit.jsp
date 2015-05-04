@@ -65,12 +65,12 @@ function initataGridInGroup(loadurl){
 			 {field:'action',title:'操作',width:90,align:'center',  
 	            formatter:function(value,row,index){ 
 	            	if (row.editing){ 
-	            		 var s = '<a href="javascrit:void(0);" onclick="saveEditRow('+index+')">保存</a> &nbsp;&nbsp;';  
-		                 var c = '<a href="javascrit:void(0);" onclick="cancelEditRow('+index+')">取消</a>&nbsp;&nbsp;';
+	            		 var s = '<a href="javascript:;" onclick="saveEditRow('+index+')">保存</a> &nbsp;&nbsp;';  
+		                 var c = '<a href="javascript:;" onclick="cancelEditRow('+index+')">取消</a>&nbsp;&nbsp;';
 		                 return s+c;  
 	            	}else{
-	            		var s = '<a href="javascrit:void(0);" onclick="openDetailPanel('+index+')">详细</a>&nbsp;&nbsp;&nbsp;&nbsp;';
-	            		var c = '<a href="javascrit:void(0);" onclick="deleteRow('+index+')">删除</a>&nbsp;&nbsp;';
+	            		var s = '<a href="javascript:;" onclick="openDetailPanel('+index+')">详细</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+	            		var c = '<a href="javascript:;" onclick="deleteRow('+index+')">删除</a>&nbsp;&nbsp;';
 	            		return s+c;  
 	            	}
 	            }  

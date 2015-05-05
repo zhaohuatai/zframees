@@ -35,7 +35,10 @@
      <import resource="zconfig/spring-config-captcha.xml"/>
      
 	<import resource="zconfig/spring-config-common.xml"/>
-	<import resource="zconfig/spring-config-shiro.xml"/> 
+<!--<import resource="zconfig/spring-config-shiro.xml"/> -->
+		<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/> 
+	<import resource="zconfig/spring-config-redis.xml"/> 
+	
 	<!--
 	<import resource="zconfig/spring-config-task.xml"/>
 	   -->

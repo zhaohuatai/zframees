@@ -1,7 +1,13 @@
+/**
+ * Copyright (c) 2015 https://github.com/zhaohuatai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.zht.common.shiro;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -23,6 +29,8 @@ import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacPermissionService;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
+import com.zht.common.shiro.redis.SerializeUtil;
+import com.zht.common.shiro.redis.cache.JedisShiroCache;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
@@ -138,10 +146,16 @@ public class ShiroDbRealm extends AuthorizingRealm {
      */
     public void clearAllCachedAuthorizationInfo() {
         Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
-        if (cache != null) {
-            for (Object key : cache.keys()) {
-                cache.remove(key);
-            }
+        if (cache != null&&cache.size()>0) {
+        	if(cache instanceof JedisShiroCache){
+        		cache.clear();
+        	}else{
+        		Set<?> keys=cache.keys();
+                for (Object key : keys) {
+                    cache.remove(key);
+                }
+        	}
+        	
         }
     }
  

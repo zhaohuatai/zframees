@@ -1,14 +1,16 @@
+/**
+ * Copyright (c) 2015 https://github.com/zhaohuatai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.zht.common.shiro.redis;
+
+import java.util.Set;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
-/**
- * jedis manager
- *
- * @author michael
- */
 public class JedisManager {
 
     private JedisPool jedisPool;
@@ -23,7 +25,8 @@ public class JedisManager {
         return jedis;
     }
 
-    public void returnResource(Jedis jedis, boolean isBroken) {
+    @SuppressWarnings("deprecation")
+	public void returnResource(Jedis jedis, boolean isBroken) {
         if (jedis == null)
             return;
         if (isBroken)
@@ -53,9 +56,12 @@ public class JedisManager {
         Jedis jedis = null;
         boolean isBroken = false;
         try {
-            jedis = getJedis();
-            jedis.select(dbIndex);
-            jedis.del(key);
+        	jedis = getJedis();
+            if(dbIndex!=-1){
+            	 jedis.select(dbIndex);
+            }
+            long size=jedis.del(key);
+            System.out.println(size);
         } catch (Exception e) {
             isBroken = true;
             throw e;
@@ -81,7 +87,62 @@ public class JedisManager {
             returnResource(jedis, isBroken);
         }
     }
-
+	public void flushDB(int dbIndex) {
+		 Jedis jedis = null;
+		 boolean isBroken = false;
+		try {
+			 jedis = getJedis();
+			 if(dbIndex!=-1){
+				 jedis.select(dbIndex);
+			 }
+			jedis.flushDB();
+		}  catch (Exception e) {
+            isBroken = true;
+            throw e;
+        }finally {
+			 returnResource(jedis, isBroken);
+		}
+	}
+	
+	public Long dbSize(int dbIndex) {
+		Long dbSize = 0L;
+		Jedis jedis =null;
+		 boolean isBroken = false;
+		try {
+			jedis=getJedis();
+			 if(dbIndex!=-1){
+				 jedis.select(dbIndex);
+			 }
+			dbSize = jedis.dbSize();
+		}   catch (Exception e) {
+            isBroken = true;
+            throw e;
+        }finally {
+			returnResource(jedis, isBroken);
+		}
+		return dbSize;
+	}
+	//*shiro-cache:shiro.authorizationCache:*
+	public Set<byte[]> keys(int dbIndex,String pattern) {
+		 Jedis jedis =null;
+		 boolean isBroken = false;
+		 Set<byte[]> keys = null;
+		try {
+			jedis=getJedis();
+			 if(dbIndex!=-1){
+				 jedis.select(dbIndex);
+			 }
+			keys = jedis.keys(pattern.getBytes());
+		}   catch (Exception e) {
+            isBroken = true;
+            throw e;
+        }finally {
+			returnResource(jedis, isBroken);
+		}
+		return keys;
+	}
+	
+	
     public JedisPool getJedisPool() {
         return jedisPool;
     }

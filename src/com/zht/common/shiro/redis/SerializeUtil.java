@@ -1,15 +1,22 @@
+/**
+ * Copyright (c) 2015 https://github.com/zhaohuatai
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
 package com.zht.common.shiro.redis;
 
 import java.io.*;
 
-/**
- * @author michael
- */
-public class SerializeUtil {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.zht.framework.util.LogUtil;
 
+public class SerializeUtil {
+	private static Logger logger = LoggerFactory.getLogger(SerializeUtil.class);
+	
     public static byte[] serialize(Object value) {
         if (value == null) {
-            throw new NullPointerException("Can't serialize null");
+            return null;
         }
         byte[] rv = null;
         ByteArrayOutputStream bos = null;
@@ -22,6 +29,8 @@ public class SerializeUtil {
             bos.close();
             rv = bos.toByteArray();
         } catch (Exception e) {
+        	LogUtil.genErrorLog("Exception:"+e.getMessage(), e);
+        	LogUtil.genErrorLog("serialize", e);;
             e.printStackTrace();
             System.out.println("serialize error");
         } finally {

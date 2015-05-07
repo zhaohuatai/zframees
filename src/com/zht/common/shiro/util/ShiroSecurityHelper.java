@@ -13,7 +13,7 @@ import org.apache.shiro.subject.support.DefaultSubjectContext;
 import org.zht.framework.spring.SpringUtils;
 import org.zht.framework.util.ZStrUtil;
 
-import com.zht.common.shiro.ShiroDbRealm;
+import com.zht.common.shiro.realm.ShiroDbRealm;
 
 public class ShiroSecurityHelper {
 	

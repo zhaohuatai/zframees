@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.zht.common.shiro;
+package com.zht.common.shiro.realm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +23,14 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.zht.framework.redis.jedis.SerializeUtil;
 import org.zht.framework.util.ConfigUtil;
 
 import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacPermissionService;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
-import com.zht.common.shiro.redis.SerializeUtil;
-import com.zht.common.shiro.redis.cache.JedisShiroCache;
+import com.zht.common.shiro.impl.redis.cache.RedisShiroCache;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
@@ -147,7 +147,7 @@ public class ShiroDbRealm extends AuthorizingRealm {
     public void clearAllCachedAuthorizationInfo() {
         Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
         if (cache != null&&cache.size()>0) {
-        	if(cache instanceof JedisShiroCache){
+        	if(cache instanceof RedisShiroCache){
         		cache.clear();
         	}else{
         		Set<?> keys=cache.keys();

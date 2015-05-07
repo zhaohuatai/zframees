@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.zht.common.shiro;
+package com.zht.common.shiro.listener;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;

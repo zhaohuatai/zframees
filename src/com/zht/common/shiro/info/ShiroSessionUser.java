@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
-package com.zht.common.shiro;
+package com.zht.common.shiro.info;
 
 import java.io.Serializable;
 import java.util.List;

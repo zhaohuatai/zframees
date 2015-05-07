@@ -9,7 +9,7 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
-import com.zht.common.shiro.ShiroSessionUser;
+import com.zht.common.shiro.info.ShiroSessionUser;
 /**
  * 
 * @ClassName :ShiroUserUtil     

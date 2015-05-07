@@ -25,7 +25,7 @@ import org.apache.shiro.web.util.WebUtils;
 /*
  *  reference to ：https://github.com/zhangkaitao
  */
-public class MaxSessionControlFilter extends AccessControlFilter{
+public class MaxSessionControlEhcaheFilter extends AccessControlFilter{
 
 	private String kickoutUrl;
 	private Boolean kickoutAfter=new Boolean(false);

@@ -44,16 +44,6 @@ public class LogUtil {
 	        stringBuilder.append(genLogElement("accept:"+accept));
 	        stringBuilder.append(genLogElement("userAgent:"+userAgent));
 	        stringBuilder.append(genLogElement("referer:"+referer));
-	        
-//	        stringBuilder.append(genLogElement(userName));
-//	        stringBuilder.append(genLogElement(jsessionId));
-//	        stringBuilder.append(genLogElement(requestURI));
-//	        stringBuilder.append(genLogElement(methed));
-//	        stringBuilder.append(genLogElement(params));
-//	        stringBuilder.append(genLogElement(remoteIpAddr));
-//	        stringBuilder.append(genLogElement(accept));
-//	        stringBuilder.append(genLogElement(userAgent));
-//	        stringBuilder.append(genLogElement(referer));
 	        operationLog.info(stringBuilder.toString());
 	        if(isPersistToDataBase){
 	        	OperationLog log=new OperationLog( 
@@ -97,18 +87,29 @@ public class LogUtil {
 	        errorLog.error(stringBuilder.toString(), e);
 	    }
 	  public static void  genErrorLog(String message, Throwable e) {
-		   String userName = (String) SecurityUtils.getSubject().getPrincipal();
-		   if(userName==null){
-		 		userName="anonymous";
-		 	}
+//		   String userName = (String) SecurityUtils.getSubject().getPrincipal();
+//		   if(userName==null){
+//		 		userName="anonymous";
+//		 	}
 	        StringBuilder stringBuilder = new StringBuilder();
-	        stringBuilder.append(genLogElement(userName));
-	        
-	        stringBuilder.append(genLogElement("exception"));
+//	        stringBuilder.append(genLogElement(userName));
 	        stringBuilder.append(genLogElement(message));
 	        errorLog.error(stringBuilder.toString(), e);
 	    }
-	  
+	  public static void  genErrorLog(String ClassName,String methodName,String message, Throwable e) {
+	        StringBuilder stringBuilder = new StringBuilder();
+	        stringBuilder.append(genLogElement("ClassName:"+methodName));
+	        stringBuilder.append(genLogElement("methodName:"+methodName));
+	        stringBuilder.append(genLogElement("Exception:"+message));
+	        errorLog.error(stringBuilder.toString(), e);
+	    }
+	  public static void  genErrorLog(Class<?> clzz,String methodName,String message, Throwable e) {
+	        StringBuilder stringBuilder = new StringBuilder();
+	        stringBuilder.append(genLogElement("ClassName:"+clzz.getName()));
+	        stringBuilder.append(genLogElement("methodName:"+methodName));
+	        stringBuilder.append(genLogElement("Exception:"+message));
+	        errorLog.error(stringBuilder.toString(), e);
+	    }
 	 public static void main(String[] sd){
 		 System.out.println(isPersistToDataBase);
 	 }

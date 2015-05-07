@@ -38,6 +38,11 @@
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
    </bean>
+     <bean id="maxSessionControlFilter" class="com.zht.common.shiro.filter.MaxSessionControlRorRedisFilter">
+		<property name="shiroSessionDAO" ref="customShiroSessionDAO"/>
+		<property name="loginFaildUrl" value="/login.jsp"/>
+	</bean>
+	
 	  <!-- Shiro Filter -->
 	  <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -49,7 +54,7 @@
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="logout" value-ref="logoutFilter"/>
-               <!-- <entry key="maxSession" value-ref="maxSessionControlFilter"/>-->
+               <entry key="maxSession" value-ref="maxSessionControlFilter"/><!-- -->
             </util:map>
         </property>
         
@@ -58,7 +63,7 @@
                  /resources/** = anon
                  /login.jsp= anon
                   /sessiontimeout.jsp= anon
-                 /rbac/user/login= anon
+                 /rbac/user/login= anon,maxSession
                  /jcaptcha/*= anon
                 /index.jsp = authc
                 /logout = anon
@@ -74,9 +79,6 @@
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="rememberMeManager" ref="rememberMeManager"/> 
-        <!-- sessionMode参数设置为native时，那么shrio就将用户的基本认证信息保存到缺省名称为shiro-activeSessionCache 的Cache中,
-          http或native
-        <property name="sessionMode" value="native" />-->
        <property name="cacheManager" ref="customShiroCacheManager" />	
     </bean>
     
@@ -85,27 +87,32 @@
         <property name="sessionDAO" ref="customShiroSessionDAO"/>
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
+        
+        <property name="cacheManager" ref="customShiroCacheManager"/>
+        
         <property name="sessionIdCookieEnabled" value="true"/>
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
         <property name="deleteInvalidSessions" value="true"/>
     </bean>
-    <bean id="customShiroCacheManager" class="com.zht.common.shiro.redis.cache.CustomShiroCacheManager">
+    
+     <!-- CacheManager  -->
+      <bean id="customShiroCacheManager" class="com.zht.common.shiro.cache.CustomShiroCacheManager">
         <property name="shiroCacheManager" ref="jedisShiroCacheManager"/>
     </bean>
-    <bean id="jedisShiroCacheManager" class="com.zht.common.shiro.redis.cache.JedisShiroCacheManager">
+    <bean id="jedisShiroCacheManager" class="com.zht.common.shiro.impl.redis.cache.RedisShiroCacheManager">
+        <property name="jedisManager" ref="jedisManager"/>
+    </bean>
+     <!-- SessionDAO -->
+	 <bean id="customShiroSessionDAO" class="com.zht.common.shiro.session.dao.CustomShiroSessionDAO">
+        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
+    </bean>
+        <bean id="jedisShiroSessionRepository" class="com.zht.common.shiro.impl.redis.session.RedisShiroSessionRepository">
         <property name="jedisManager" ref="jedisManager"/>
     </bean>
     
-    <bean id="jedisManager" class="com.zht.common.shiro.redis.JedisManager">
-        <property name="jedisPool" ref="jedisPool"/>
-    </bean>
-	 <bean id="customShiroSessionDAO" class="com.zht.common.shiro.redis.session.CustomShiroSessionDAO">
-        <property name="shiroSessionRepository" ref="jedisShiroSessionRepository"/>
-    </bean>
-        <bean id="jedisShiroSessionRepository" class="com.zht.common.shiro.redis.session.JedisShiroSessionRepository">
-        <property name="jedisManager" ref="jedisManager"/>
-    </bean>
-     <bean id="userRealm" class="com.zht.common.shiro.ShiroDbRealm">
+    
+     <bean id="userRealm" class="com.zht.common.shiro.realm.ShiroDbRealm">
+     <!--  -->
 	     <property name="authorizationCachingEnabled" value="true"/>
 	     <property name="authorizationCacheName" value="shiro.authorizationCache" />
 	     
@@ -120,11 +127,18 @@
           </property>
       </bean>
    
-    
+    <!-- 10000 -->
      <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
-         <property name="interval" value="1800000"/>
+         <property name="interval" value="30000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
+    
+         <!-- redis maneger -->
+    <bean id="jedisManager" class="org.zht.framework.redis.jedis.JedisManager">
+        <property name="jedisPool" ref="jedisPool"/>
+    </bean>
+    
+    
 <!--maxActive==> maxTotal
 maxWait ==> maxWaitMillis
 <bean id="pool2Config" class="org.apache.commons.pool2.impl.GenericObjectPoolConfig">
@@ -136,7 +150,7 @@ maxWait ==> maxWaitMillis
   -->
   <!--  -->
      <bean id="jedisPoolConfig"  class="org.zht.framework.redis.PoolConfigWrapper">
-        <property name="maxTotal" value="20"/>
+        <property name="maxTotal" value="100"/>
         <property name="maxIdle" value="10"/>
         <property name="minIdle" value="5"/>
         <property name="maxWaitMillis" value="2000"/>

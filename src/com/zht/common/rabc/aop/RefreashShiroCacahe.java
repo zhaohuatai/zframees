@@ -7,11 +7,10 @@ package com.zht.common.rabc.aop;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.zht.framework.spring.SpringUtils;
 
-import com.zht.common.shiro.ShiroDbRealm;
+import com.zht.common.shiro.realm.ShiroDbRealm;
 /**
  * rbac部分改动时 重新加载shiro认证授权信息 
 * @ClassName :RefreashShiroCacahe     

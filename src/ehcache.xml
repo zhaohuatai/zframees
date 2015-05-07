@@ -5,9 +5,18 @@
 		monitoring="autodetect" 
 		dynamicConfig="true">
 		
-	<!-- <diskStore path="D://diskStore" />-->
-		<diskStore path="java.io.tmpdir" />
-		
+	 <diskStore path="D://ehcahe7/diskStore" />
+		<!--<diskStore path="java.io.tmpdir" />-->
+<!--rmi手动配置
+<cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"  
+       properties="peerDiscovery=manual,
+      			   socketTimeoutMillis=2000,
+      			   hostName=localhost,port=4567,
+       			   rmiUrls=//localhost:40000/shiro.authorizationCache|//localhost:40000/shiro-activeSessionCache|//localhost:40000/shiro-kickout-session"/>  
+<cacheManagerPeerListenerFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerListenerFactory"  
+            properties="hostName=localhost,port=40000,
+			            socketTimeoutMillis=120000"/>   
+ --> 
 	<defaultCache 
             maxElementsInMemory="10000"
             maxElementsOnDisk="10000000"
@@ -17,13 +26,24 @@
             timeToLiveSeconds="120" 
             diskPersistent="false" 
             diskExpiryThreadIntervalSeconds="120" 
-            memoryStoreEvictionPolicy="LRU" 
-            /> 
+            memoryStoreEvictionPolicy="LRU">
+           <!--
+			<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>  
+                <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+           -->
+            </defaultCache> 
+            
      <cache name="shiro.authorizationCache"
 			maxElementsInMemory="100"
 			eternal="false"
-			timeToLiveSeconds="600"
-			overflowToDisk="false"/> 
+			timeToLiveSeconds="0"
+			overflowToDisk="true">
+		  <!--
+			<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>  
+           <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+             -->
+	</cache> 
+			
    <cache name="shiro-activeSessionCache"
            maxEntriesLocalHeap="10000"
            overflowToDisk="true"
@@ -31,7 +51,13 @@
            diskPersistent="false"
            timeToLiveSeconds="0"
            timeToIdleSeconds="0" 
-           statistics="true"/>
+           statistics="true">
+	  	<!--
+			<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>  
+          	   <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+             -->          
+   </cache>
+   
    <cache name="shiro-kickout-session"
            maxEntriesLocalHeap="2000"
            eternal="false"
@@ -39,6 +65,10 @@
            timeToLiveSeconds="0"
            overflowToDisk="false"
            statistics="true">
+          <!-- 
+			<cacheEventListenerFactory class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"/>  
+         		    <bootstrapCacheLoaderFactory class="net.sf.ehcache.distribution.RMIBootstrapCacheLoaderFactory"/>
+             -->
     </cache>      
            <!--  -->
             <!-- 

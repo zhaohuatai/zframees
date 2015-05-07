@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zht.common.dauth.thread.CurrentReqestInfo;
 import com.zht.common.dauth.thread.RequestThreadLocal;
 import com.zht.common.dauth.util.DataAuthParser;
-import com.zht.common.shiro.ShiroDbRealm;
+import com.zht.common.shiro.realm.ShiroDbRealm;
 public class HibernateBaseDaoImpl implements IHibernateBaseDao {
 
 	@Resource(name = "sessionFactory")

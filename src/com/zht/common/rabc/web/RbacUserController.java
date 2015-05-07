@@ -41,7 +41,7 @@ import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacPermissionService;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
-import com.zht.common.shiro.ShiroSessionUser;
+import com.zht.common.shiro.info.ShiroSessionUser;
 import com.zht.common.shiro.util.ShiroUserUtil;
 /**
  * 

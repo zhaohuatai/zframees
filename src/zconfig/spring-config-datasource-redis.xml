@@ -30,5 +30,5 @@
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.StringRedisTemplate">
 		<property name="connectionFactory" 	ref="jedisConnectionFactory" />
 	</bean>	
-	<bean id="redisService" class="org.zht.framework.redis.RedisService"/>	
+	<bean id="redisService" class="org.zht.framework.redis.spring.RedisService"/>	
 </beans>

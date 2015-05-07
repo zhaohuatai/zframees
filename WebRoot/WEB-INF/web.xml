@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
-xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" 
-xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/ 
-http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd" 
-	id="WebApp_ID" 
-	metadata-complete="true" 
-	version="3.1">
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:jsp="http://java.sun.com/xml/ns/javaee/jsp" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee/ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" metadata-complete="true" version="3.1">
   <display-name>spring4hibernate4.3ehcach2.4JEE7</display-name>
   <jsp-config>
     <taglib>
@@ -35,7 +28,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <filter-name>encodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
   <filter>
     <filter-name>GZIPFilter</filter-name>
     <filter-class>org.zht.framework.filter.gzip.GZIPFilter</filter-class>
@@ -45,8 +37,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <filter-name>GZIPFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
-   <!--  --> 
   <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -62,8 +52,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>ASYNC</dispatcher>
   </filter-mapping>
-  
-  
   <filter>
     <filter-name>DruidWebStatFilter</filter-name>
     <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
@@ -81,7 +69,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <filter-name>DruidWebStatFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
   <servlet>
     <servlet-name>DruidStatView</servlet-name>
     <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
@@ -91,7 +78,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <servlet-name>DruidStatView</servlet-name>
     <url-pattern>/monitor/datasource/druid/*</url-pattern>
   </servlet-mapping>
-  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -101,8 +87,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
-
-  
   <filter>
     <filter-name>userAccessLogFilter</filter-name>
     <filter-class>org.zht.framework.filter.UserAccessLogFilter</filter-class>
@@ -113,7 +97,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  
   <filter>
     <filter-name>hibernateOpenSessionInViewFilter</filter-name>
     <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
@@ -137,7 +120,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <dispatcher>REQUEST</dispatcher>
     <dispatcher>FORWARD</dispatcher>
   </filter-mapping>
-  
   <servlet>
     <servlet-name>SpringDispatcherServlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -146,7 +128,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
       <param-value>classpath*:/zconfig/spring-config-mvc.xml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
-  	<async-supported>true</async-supported>
+    <async-supported>true</async-supported>
   </servlet>
   <servlet-mapping>
     <servlet-name>SpringDispatcherServlet</servlet-name>
@@ -160,7 +142,6 @@ http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
     <filter-name>jcaptchaFilter</filter-name>
     <url-pattern>/jcaptcha/jcaptcha.jpg</url-pattern>
   </filter-mapping>
-  
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>

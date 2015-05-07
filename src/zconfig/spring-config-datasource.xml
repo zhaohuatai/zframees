@@ -43,8 +43,7 @@
 		<property name="dataSource" ref ="dataSource"/>
 		<property name="packagesToScan" value="
 		com.zht.project.*.*,
-		com.zht.common.*.*,
-		com.lets.doit.ptj.*.*" />
+		com.zht.common.*.*" />
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>

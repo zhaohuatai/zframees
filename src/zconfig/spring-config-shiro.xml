@@ -53,8 +53,8 @@
         <property name="realm" ref="userRealm"/>
         <property name="sessionManager" ref="sessionManager"/>
         <property name="rememberMeManager" ref="rememberMeManager"/> 
-        <!-- sessionMode参数设置为native时，那么shrio就将用户的基本认证信息保存到缺省名称为shiro-activeSessionCache 的Cache中 
-        <property name="sessionMode" value="native" />-->
+        <!-- sessionMode参数设置为native时，那么shrio就将用户的基本认证信息保存到缺省名称为shiro-activeSessionCache 的Cache中
+        <property name="sessionMode" value="native"/>--> 
        <property name="cacheManager" ref="shiroCacheManager" />	
     </bean>
     
@@ -104,13 +104,13 @@
 	    <property name="sessionIdGenerator" ref="sessionIdGenerator" />  
 	</bean>  
     
-    
+    <!-- 1800000 -->
      <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
-         <property name="interval" value="1800000"/>
+         <property name="interval" value="300000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
        <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <property name="globalSessionTimeout" value="1800000"/>
+        <property name="globalSessionTimeout" value="300000"/>
         <property name="sessionDAO" ref="cacheSessionDAO"/>
         <property name="deleteInvalidSessions" value="true"/>
 

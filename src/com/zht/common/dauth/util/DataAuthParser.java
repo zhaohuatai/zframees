@@ -14,7 +14,7 @@ import org.zht.framework.util.ZStrUtil;
 import com.zht.common.dauth.thread.CurrentReqestInfo;
 import com.zht.common.dauth.thread.RequestTLUtil;
 import com.zht.common.dauth.thread.RequestThreadLocal;
-import com.zht.common.shiro.ShiroSessionUser;
+import com.zht.common.shiro.info.ShiroSessionUser;
 import com.zht.common.shiro.util.ShiroUserUtil;
 
 public class DataAuthParser {

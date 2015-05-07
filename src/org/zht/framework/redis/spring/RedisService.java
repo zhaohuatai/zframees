@@ -1,4 +1,4 @@
-package org.zht.framework.redis;
+package org.zht.framework.redis.spring;
 
 import java.util.Set;
 
@@ -7,7 +7,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 
 import redis.clients.jedis.Jedis;
-
+/**
+ * 
+* @ClassName :RedisService     
+* @Description :   
+* @createTime :2015年5月7日  上午10:16:23   
+* @author ：zhaohuatai   
+* @version :1.0
+ */
 public class RedisService {
 	
     //操作redis客户端
@@ -15,6 +22,9 @@ public class RedisService {
     @Autowired
     @Qualifier("jedisConnectionFactory")
     private JedisConnectionFactory jedisConnectionFactory;
+    private RedisService (){
+
+    }
 	/**
      * 通过key删除（字节）
      * @param key
@@ -130,8 +140,4 @@ public class RedisService {
         }
         return jedis;
     }
-    private RedisService (){
-
-    }
-
 }

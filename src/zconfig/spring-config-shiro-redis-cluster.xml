@@ -42,7 +42,9 @@
 		<property name="shiroSessionDAO" ref="customShiroSessionDAO"/>
 		<property name="loginFaildUrl" value="/login.jsp"/>
 	</bean>
-	
+<bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
+    <property name="port" value="8443"/>  
+</bean>  
 	  <!-- Shiro Filter -->
 	  <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -55,6 +57,7 @@
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="logout" value-ref="logoutFilter"/>
                <entry key="maxSession" value-ref="maxSessionControlFilter"/><!-- -->
+               <!--  <entry key="ssl" value-ref="sslFilter"/>  -->
             </util:map>
         </property>
         
@@ -129,7 +132,7 @@
    
     <!-- 10000 -->
      <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
-         <property name="interval" value="30000"/>
+         <property name="interval" value="1800000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
     

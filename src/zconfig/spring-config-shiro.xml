@@ -40,7 +40,7 @@
         </property>
       
     </bean>
-    <bean id="maxSessionControlFilter" class="com.zht.common.shiro.filter.MaxSessionControlFilter">
+    <bean id="maxSessionControlFilter" class="com.zht.common.shiro.filter.MaxSessionControlEhcaheFilter">
 		 <property name="cacheManager" ref="shiroCacheManager"/>
 		 <property name="sessionManager" ref="sessionManager"/>
 		 <property name="kickoutAfter" value="false"/><!-- 是否踢出后来登录的， 默认是 false； 即后者登录的用户踢出前者登录的用户； -->

@@ -38,7 +38,7 @@
         <property name="passwordParam" value="password"/>
         <property name="rememberMeParam" value="rememberMe"/>
    </bean>
-     <bean id="maxSessionControlFilter" class="com.zht.common.shiro.filter.MaxSessionControlRorRedisFilter">
+     <bean id="maxSessionControlFilter" class="com.zht.common.shiro.filter.MaxSessionControlFororRedisFilter">
 		<property name="shiroSessionDAO" ref="customShiroSessionDAO"/>
 		<property name="loginFaildUrl" value="/login.jsp"/>
 	</bean>

@@ -1,0 +1,45 @@
+对于SSL的支持，Shiro只是判断当前url是否需要SSL登录，如果需要自动重定向到https进行访问。
+ 
+首先生成数字证书，生成证书到D:\localhost.keystore
+使用JDK的keytool命令，生成证书（包含证书/公钥/私钥）到D:\localhost.keystore：
+keytool -genkey -keystore "D:\localhost.keystore" -alias localhost -keyalg RSA
+输入密钥库口令:
+再次输入新口令:
+您的名字与姓氏是什么?
+  [Unknown]:  localhost
+您的组织单位名称是什么?
+  [Unknown]:  sishuok.com
+您的组织名称是什么?
+  [Unknown]:  sishuok.com
+您所在的城市或区域名称是什么?
+  [Unknown]:  beijing
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  beijing
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  cn
+CN=localhost, OU=sishuok.com, O=sishuok.com, L=beijing, ST=beijing, C=cn是否正确
+?
+  [否]:  y
+ 
+输入 <localhost> 的密钥口令
+        (如果和密钥库口令相同, 按回车):
+再次输入新口令:
+ 
+通过如上步骤，生成证书到D:\ localhost.keystore；
+ 
+然后设置tomcat下的server.xml
+此处使用了apache-tomcat-7.0.40版本，打开conf/server.xml，找到：
+ 
+Java代码  收藏代码
+<!--  
+<Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"  
+       maxThreads="150" scheme="https" secure="true"  
+       clientAuth="false" sslProtocol="TLS" />  
+-->   
+替换为  
+Java代码  收藏代码
+<Connector port="8443" protocol="HTTP/1.1" SSLEnabled="true"  
+       maxThreads="150" scheme="https" secure="true"  
+       clientAuth="false" sslProtocol="TLS"   
+       keystoreFile="D:\localhost.keystore" keystorePass="123456789"/>   
+keystorePass就是生成keystore时设置的密码。

@@ -32,7 +32,7 @@ import com.zht.common.shiro.session.dao.CustomShiroSessionDAO;
 /*
  *后期 改成：db3中存储 用户session队列，实时监控，降低系统内存损耗，2015-05-06 zhaohuatai
  */
-public class MaxSessionControlRorRedisFilter extends AdviceFilter{
+public class MaxSessionControlFororRedisFilter extends AdviceFilter{
 
 	private  CustomShiroSessionDAO shiroSessionDAO;
 	private String loginFaildUrl;

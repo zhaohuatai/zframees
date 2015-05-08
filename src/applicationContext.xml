@@ -29,7 +29,7 @@
 	
 	<import resource="zconfig/spring-config-datasource.xml"/>
 	<import resource="zconfig/spring-config-datasource-redis.xml"/> 
-	<import resource="zconfig/spring-config-datasource-mogodb.xml"/>
+	<!--<import resource="zconfig/spring-config-datasource-mogodb.xml"/> --> 
 	
  	 <import resource="zconfig/spring-config-cache.xml"/>
  	   
@@ -37,6 +37,10 @@
      <import resource="zconfig/spring-config-validator.xml"/>
      <import resource="zconfig/spring-config-message.xml"/>
      <import resource="zconfig/spring-config-captcha.xml"/>
+     
+      <import resource="zconfig/spring-config-task-excutor.xml"/>
+     
+     <import resource="zconfig/spring-config-mail.xml"/>
      
 	<import resource="zconfig/spring-config-common.xml"/>
 <!--<import resource="zconfig/spring-config-shiro.xml"/> --> 

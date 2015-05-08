@@ -17,6 +17,11 @@
     <task:scheduled-tasks scheduler="scheduler">
         <task:scheduled ref="taskTest" method="myTest" cron="0/5 * * * * ? "/>
     </task:scheduled-tasks>
-
+	<!-- 异步任务 -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="20" />
+		<property name="maxPoolSize" value="100" />
+		<property name="queueCapacity" value="45" />
+	</bean>
 
 </beans>

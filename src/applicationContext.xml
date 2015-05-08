@@ -40,7 +40,7 @@
 	<!---->
 	<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/>
 	<import resource="zconfig/spring-config-datasource-redis.xml"/> 
-	
+	<import resource="zconfig/spring-config-datasource-mogodb.xml"/> 
 	<!--
 	<import resource="zconfig/spring-config-task.xml"/>
 	   -->

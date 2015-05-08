@@ -11,7 +11,6 @@ public class ConfigUtil {
 
 	/**
 	 * 获取配置文件信息
-	 * 
 	 * @param config
 	 * @return 若不包含该属性，则返回为null
 	 */
@@ -26,7 +25,7 @@ public class ConfigUtil {
 			properties.load(inputstream);
 		} catch (Exception e) {
 			e.printStackTrace();
-
+			LogUtil.genErrorLog(ConfigUtil.class,"getConfig",e.getMessage(), e);
 		}
 		String s = properties.getProperty(config, null);
 		return s;
@@ -38,6 +37,7 @@ public class ConfigUtil {
 			properties.load(inputstream);
 		} catch (Exception e) {
 			e.printStackTrace();
+			LogUtil.genErrorLog(ConfigUtil.class,"getConfig",e.getMessage(), e);
 		}
 		String s = properties.getProperty(configName, defaultValue);
 		return s;

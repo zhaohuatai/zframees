@@ -5,7 +5,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans 
        http://www.springframework.org/schema/beans/spring-beans.xsd"
        default-lazy-init="false">
-       	  <!-- 国际化的消息资源文件（本系统中主要用于显示/错误消息定制） -->
+       	  <!-- 国际化的消息资源文件 -->
 	    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>

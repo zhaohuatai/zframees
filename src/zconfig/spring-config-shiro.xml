@@ -58,7 +58,7 @@
        <property name="cacheManager" ref="shiroCacheManager" />	
     </bean>
     
-     <bean id="userRealm" class="com.zht.common.shiro.ShiroDbRealm">
+     <bean id="userRealm" class="com.zht.common.shiro.realm.ShiroDbRealm">
      <property name="authorizationCachingEnabled" value="true"/>
      <property name="authorizationCacheName" value="shiro.authorizationCache" />
      
@@ -121,7 +121,7 @@
         <property name="sessionIdCookieEnabled" value="true"/>
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
     </bean>
- <bean id="onLineSessionListener" class="com.zht.common.shiro.OnLineSessionListener"/>
+ <bean id="onLineSessionListener" class="com.zht.common.shiro.listener.OnLineSessionListener"/>
  
    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
         <!-- rememberme cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度（128 256 512 位）-->

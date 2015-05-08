@@ -22,6 +22,7 @@
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="logout" value-ref="logoutFilter"/>
                 <entry key="maxSession" value-ref="maxSessionControlFilter"/>
+                <entry key="ssl" value-ref="sslFilter"/>
             </util:map>
         </property>
         
@@ -30,11 +31,11 @@
                  /resources/** = anon
                  /login.jsp= anon
                   /sessiontimeout.jsp= anon
-                 /rbac/user/login= anon
+                 /rbac/user/login=maxSession, anon
                  /jcaptcha/*= anon
                 /index.jsp = authc
                 /logout = anon
-                /** = maxSession,authc,roles,perms
+                /** = authc,roles,perms
             </value>
             <!-- maxSession,authc,roles,perms -->
         </property>
@@ -73,7 +74,10 @@
           </property>
       </bean>
    
-   
+   <bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
+    <property name="port" value="8443"/>  
+	</bean>
+	
    <bean id="formAuthenticationFilter"  class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
         <property name="usernameParam" value="userName"/>
         <property name="passwordParam" value="password"/>

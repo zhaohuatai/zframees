@@ -52,7 +52,7 @@ appender 是负责写日志的组件 ,,有两个必要属性name和class。name�
 level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，不能设置为INHERITED或者同义词NULL。默认是DEBUG。
 
  -->
-    <root level="info"/>
+    <root level="DEBUG"/>
 <!-- 
 loger:用来设置某一个包或者具体的某一个类的日志打印级别、以及指定<appender>,仅有一个name属性，一个可选的level和一个可选的addtivity属性。
 	loger=: name:用来指定受此loger约束的某一个包或者具体的某一个类。
@@ -62,7 +62,7 @@ loger:用来设置某一个包或者具体的某一个类的日志打印级别�
 <loger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
  -->
     <!---->
-    <logger name="org.*" level="debug">
+    <logger name="*.*" level="debug">
        <appender-ref ref="STDOUT"/>
     </logger>
 

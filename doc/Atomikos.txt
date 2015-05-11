@@ -1,0 +1,23 @@
+1.一个jvm实例中只能有一个数据源实例， main函数只能启动一次，tomcat中多数据源只能有一个应用程序，不可部署多个
+2.同一数据源多次查询会报错：
+2.com.mysql.jdbc.jdbc2.optional.MysqlXAException: XAER_INVAL: Invalid arguments (or unsupported command)
+解决：http://www.atomikos.com/Documentation/KnownProblems#MySQL_XA_bug
+
+自带数据源：
+	<bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
+			init-method="init" destroy-method="close">
+        <property name="uniqueResourceName" value="dataSourceB"/> 
+         <property name="xaDataSourceClassName" value="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"/>  
+    <property name="xaProperties">  
+        <props>  
+            <prop key="url">${connection.urlB}</prop>  
+            <prop key="user">root</prop>  
+            <prop key="password">root</prop>  
+        </props>  
+    </property>  
+    <property name="minPoolSize" value="10" />  
+    <property name="maxPoolSize" value="100" />  
+    <property name="borrowConnectionTimeout" value="30" />  
+    <property name="testQuery" value="select 1" />  
+    <property name="maintenanceInterval" value="60" />  
+	</bean>

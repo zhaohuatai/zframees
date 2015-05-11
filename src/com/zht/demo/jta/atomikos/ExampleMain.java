@@ -13,7 +13,7 @@ import com.zht.demo.mogodb.entity.Address;
 import com.zht.demo.mogodb.entity.Customer;
 import com.zht.demo.mogodb.service.CustomerService;
 
-public class ExampleMian {
+public class ExampleMain {
 
 	public static void main(String[] args) {     
 		  

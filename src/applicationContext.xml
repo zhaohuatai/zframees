@@ -24,11 +24,15 @@
 	<context:annotation-config />	
 	
 	<!-- 使用 annotation 自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 --> 
-	<context:component-scan base-package="com.zht.project,com.zht.common" />
+	<context:component-scan base-package="com.zht.project,com.zht.common,com.zht.demo" />
 	<aop:aspectj-autoproxy  proxy-target-class="true"  />
 	
 	<import resource="zconfig/spring-config-datasource.xml"/>
-	<import resource="zconfig/spring-config-datasource-redis.xml"/> 
+	 
+	<!--<import resource="zconfig/spring-config-datasource-jta-atomikos.xml"/>--> 
+	
+	<!--<import resource="zconfig/spring-config-datasource-redis.xml"/>  --> 
+	
 	<!--<import resource="zconfig/spring-config-datasource-mogodb.xml"/> --> 
 	
  	 <import resource="zconfig/spring-config-cache.xml"/>
@@ -43,17 +47,19 @@
      <import resource="zconfig/spring-config-mail.xml"/>
      
 	<import resource="zconfig/spring-config-common.xml"/>
-<!--<import resource="zconfig/spring-config-shiro.xml"/> --> 
+<!----> 
+	<import resource="zconfig/spring-config-shiro.xml"/> 
 
 	<!---->
-	<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/>
+	<!--<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/>-->
  
 	<!--
 	<import resource="zconfig/spring-config-task.xml"/>
 	   -->
+<!--	   
 <bean id="dataAuthMapSource" class="com.zht.common.dauth.util.DataAuthMapSource" lazy-init="false"/>
 <bean  class="com.zht.common.dauth.util.DataAuthParser" />
-
+ -->
 </beans>
 
 

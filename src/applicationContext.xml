@@ -30,8 +30,8 @@
 	<import resource="zconfig/spring-config-datasource.xml"/>
 	 
 	<!--<import resource="zconfig/spring-config-datasource-jta-atomikos.xml"/>--> 
-	
-	<!--<import resource="zconfig/spring-config-datasource-redis.xml"/>  --> 
+	<!--
+	<import resource="zconfig/spring-config-datasource-redis.xml"/>  --> 
 	
 	<!--<import resource="zconfig/spring-config-datasource-mogodb.xml"/> --> 
 	
@@ -42,43 +42,22 @@
      <import resource="zconfig/spring-config-message.xml"/>
      <import resource="zconfig/spring-config-captcha.xml"/>
      
-      <import resource="zconfig/spring-config-task-excutor.xml"/>
-     
-     <import resource="zconfig/spring-config-mail.xml"/>
+     <!-- <import resource="zconfig/spring-config-task-excutor.xml"/> --> 
+     <!--
+     <import resource="zconfig/spring-config-mail.xml"/> --> 
      
 	<import resource="zconfig/spring-config-common.xml"/>
-<!----> 
+	<!-- --> 
 	<import resource="zconfig/spring-config-shiro.xml"/> 
-
-	<!---->
-	<!--<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/>-->
- 
+	<!-- 
+	<import resource="zconfig/spring-config-shiro-redis-cluster.xml"/>
+ --> 
 	<!--
 	<import resource="zconfig/spring-config-task.xml"/>
-	   -->
+	-->
 <!--	   
 <bean id="dataAuthMapSource" class="com.zht.common.dauth.util.DataAuthMapSource" lazy-init="false"/>
 <bean  class="com.zht.common.dauth.util.DataAuthParser" />
  -->
+ 
 </beans>
-
-
-
-
- <!-- AOP配置事物 
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>  
-            <tx:method name="query*" read-only="true" propagation="REQUIRED" />  
-            <tx:method name="delete*"  propagation="REQUIRED" rollback-for="Exception" />  
-            <tx:method name="update*" propagation="REQUIRED"  rollback-for="Exception" />  
-            <tx:method name="insert*" propagation="REQUIRED"  rollback-for="Exception" />  
-            <tx:method name="*" propagation="REQUIRED"  rollback-for="Exception" />  
-        </tx:attributes>  
-    </tx:advice>  
-      
-
-    <aop:config>  
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.zht..service.*.*(..))"/>  
-        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>  
-    </aop:config> 
-    -->  

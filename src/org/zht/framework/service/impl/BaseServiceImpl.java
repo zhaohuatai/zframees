@@ -31,6 +31,8 @@ import org.zht.framework.data.ParamObject;
 import org.zht.framework.data.RowMap;
 import org.zht.framework.exception.ServiceLogicalException;
 import org.zht.framework.service.IBaseService;
+import org.zht.framework.spring.DynamicSessionFactory;
+import org.zht.framework.spring.SessionFactoryContextHolder;
 import org.zht.framework.spring.SpringUtils;
 import org.zht.framework.util.ZBeanUtil;
 import org.zht.framework.util.ZStrUtil;
@@ -38,6 +40,7 @@ import org.zht.framework.zhtdao.base.impl.BaseDaoImpl;
 import org.zht.framework.zhtdao.identity.PKBaseEntity;
 
 import com.esotericsoftware.reflectasm.MethodAccess;
+import com.zht.common.dynamic.dataSource.SessionFactoryType;
 //@Service
 @Transactional(rollbackFor=Exception.class)
 @SuppressWarnings("hiding")
@@ -45,14 +48,38 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 	@Resource(name = "baseDaoImpl")
 	protected BaseDaoImpl baseDaoImpl;
 	
-	private LocalSessionFactoryBean factory = (LocalSessionFactoryBean) SpringUtils.getBean("&sessionFactory");
+	protected DynamicSessionFactory dynamicSessionFactory = (DynamicSessionFactory) SpringUtils.getBean("dynamicSessionFactory");
+	
+//	private LocalSessionFactoryBean factory = (LocalSessionFactoryBean) SpringUtils.getBean("&sessionFactory");
 	
 	private Class<? extends PKBaseEntity> entityClass;
 	//直接加载，不要作为函数内部变量，
-	protected final PersistentClass clazz = factory.getConfiguration().getClassMapping(this.getEntityClass().getName()); 
+//	protected final PersistentClass clazz = factory.getConfiguration().getClassMapping(this.getEntityClass().getName());
+	protected final PersistentClass clazz = parserPersistentClass(); 
 //	protected final Table table = clazz.getTable(); 
 	protected MethodAccess access = MethodAccess.get(this.getEntityClass());
 	
+//--------------------------------------------------------------------------------------------------------	
+	@SuppressWarnings("unused")
+	private PersistentClass parserPersistentClass(){
+		PersistentClass clazz=null;
+		
+		List<String> resolvedSessionFactoryNames=dynamicSessionFactory.getResolvedSessionFactoryNames();
+		if(resolvedSessionFactoryNames==null){
+			 throw new IllegalStateException("sessionFactory dynamic router not initialized");
+		}
+		for(String key : resolvedSessionFactoryNames){
+			LocalSessionFactoryBean factory = (LocalSessionFactoryBean) SpringUtils.getBean("&"+key+"");
+			 clazz=factory.getConfiguration().getClassMapping(this.getEntityClass().getName());
+			if(clazz!=null){
+				return clazz;
+			}
+		}
+		if(clazz==null){
+			throw new IllegalStateException("target persistent Class not configed in all of the sessionFactories");
+		}
+		return clazz;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public  Class<?> getEntityClass() {
@@ -62,6 +89,12 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 		}
 		return entityClass;
 	}
+	
+	protected  void changeFactoryType (SessionFactoryType factoryType) {
+		SessionFactoryContextHolder.setSessionFactoryName(factoryType.name());
+	}
+	
+//--------------------------------------------------------------------------------------------------------
 	@Override
 	public void $base_saveOrUpdate(M m) {
 		if(m==null){

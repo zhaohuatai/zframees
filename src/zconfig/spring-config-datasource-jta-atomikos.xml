@@ -114,10 +114,11 @@
 	 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref ="dataSourceA"/>
-		<property name="packagesToScan" value="
-		com.zht.project.*.*,
-		com.zht.common.*.*,
-		com.zht.demo.*.*"/>
+		<property name="packagesToScan" 
+			value="
+			com.zht.project.*.*,
+			com.zht.common.*.*,
+			com.zht.demo.*.*"/>
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -132,10 +133,10 @@
 			 
 			 	 <prop key="hibernate.cache.use_structured_entries">true</prop>
        		 	 <prop key="hibernate.cache.provider_configuration_file_resource_path">WEB-INF/classes/ehcache.xml</prop>
-<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringJtaSessionContext</prop>  
-<prop key="hibernate.transaction.jta.platform">com.atomikos.icatch.jta.hibernate4.AtomikosPlatform</prop>
-<prop key="javax.persistence.transactionType">jta</prop>
-<prop key="hibernate.search.autoregister_listeners">false</prop> 	
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringJtaSessionContext</prop>  
+				<prop key="hibernate.transaction.jta.platform">com.atomikos.icatch.jta.hibernate4.AtomikosPlatform</prop>
+				<prop key="javax.persistence.transactionType">jta</prop>
+				<prop key="hibernate.search.autoregister_listeners">false</prop> 	
 			</props>
 		</property>
 	</bean>
@@ -143,9 +144,9 @@
 		<bean id="sessionFactoryB" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref ="dataSourceB"/>
 		<property name="packagesToScan" value="
-		com.zht.project.*.*,
-		com.zht.common.*.*,
-		com.zht.demo.*.*"/>
+			com.zht.project.*.*,
+			com.zht.common.*.*,
+			com.zht.demo.*.*"/>
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -161,12 +162,22 @@
 			 
 			 	 <prop key="hibernate.cache.use_structured_entries">true</prop>
        		 	 <prop key="hibernate.cache.provider_configuration_file_resource_path">WEB-INF/classes/ehcache.xml</prop>
-<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringJtaSessionContext</prop>  
-<prop key="hibernate.transaction.jta.platform">com.atomikos.icatch.jta.hibernate4.AtomikosPlatform</prop>
-<prop key="javax.persistence.transactionType">jta</prop> 
-<prop key="hibernate.search.autoregister_listeners">false</prop>     		 	 
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringJtaSessionContext</prop>  
+				<prop key="hibernate.transaction.jta.platform">com.atomikos.icatch.jta.hibernate4.AtomikosPlatform</prop>
+				<prop key="javax.persistence.transactionType">jta</prop> 
+				<prop key="hibernate.search.autoregister_listeners">false</prop>     		 	 
         		 </props>
 		</property>
+	</bean>
+	
+	<bean id="dynamicSessionFactory" class="org.zht.framework.spring.DynamicSessionFactory">
+		<property name="targetSessionFactories">
+			<map key-type="java.lang.String">
+				<entry key="sessionFactory" value-ref="sessionFactory" />
+				<entry key="sessionFactoryB" value-ref="sessionFactoryB" />
+			</map>
+		</property>
+		<property name="defaultTargetSessionFactory" ref="sessionFactory" />
 	</bean>
 	
 	

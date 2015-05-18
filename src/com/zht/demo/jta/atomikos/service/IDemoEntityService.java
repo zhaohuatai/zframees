@@ -1,7 +1,11 @@
 package com.zht.demo.jta.atomikos.service;
 
-public interface IDemoEntityService {
+import org.zht.framework.service.IBaseService;
 
-	public void queryAndSaveDeleteTest();
+import com.zht.demo.jta.atomikos.model.DemoEntity;
+
+public interface IDemoEntityService extends IBaseService<DemoEntity> {
+	public void dynamicDataSourceTest();
+	public void onedatasourceTest();
 	
 }

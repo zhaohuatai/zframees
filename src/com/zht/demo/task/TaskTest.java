@@ -1,4 +1,4 @@
-package com.zht.common.task;
+package com.zht.demo.task;
 
 import org.springframework.stereotype.Component;
 

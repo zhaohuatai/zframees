@@ -42,9 +42,9 @@
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref ="dataSource"/>
 		<property name="packagesToScan" value="
-		com.zht.project.*.*,
-		com.zht.common.*.*
-		com.zht.demo.*.*" />
+			com.zht.project.*.*,
+			com.zht.common.*.*,
+			com.zht.demo.*.*" />
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -64,6 +64,18 @@
 			</props>
 		</property>
 	</bean>
+	
+		<bean id="dynamicSessionFactory" class="org.zht.framework.spring.DynamicSessionFactory">
+		<property name="targetSessionFactories">
+			<map key-type="java.lang.String">
+				<entry key="sessionFactory" value-ref="sessionFactory" />
+				<!-- <entry key="sessionFactoryB" value-ref="sessionFactoryB" /> -->
+			</map>
+		</property>
+		<property name="defaultTargetSessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">  
        <property name="dataSource" ref="dataSource"/>
    </bean> 

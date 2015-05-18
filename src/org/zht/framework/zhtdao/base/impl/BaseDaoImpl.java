@@ -17,7 +17,6 @@ import org.zht.framework.data.ParamObject;
 import org.zht.framework.exception.DaoException;
 import org.zht.framework.zhtdao.base.IBaseDao;
 import org.zht.framework.zhtdao.hibernate.impl.HibernateBaseDaoImpl;
-//@Component("baseDaoImpl")
 public class BaseDaoImpl extends HibernateBaseDaoImpl implements IBaseDao{
 	
 	public DataSet loadDataSet(String queryStr,ParamObject paramObject)throws DaoException {

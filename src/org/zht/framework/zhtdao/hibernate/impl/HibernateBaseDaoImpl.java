@@ -32,25 +32,29 @@ import org.zht.framework.data.ParamItem;
 import org.zht.framework.data.ParamObject;
 import org.zht.framework.data.RowMap;
 import org.zht.framework.exception.DaoException;
+import org.zht.framework.spring.DynamicSessionFactory;
 import org.zht.framework.spring.SpringUtils;
 import org.zht.framework.util.ZStrUtil;
 import org.zht.framework.zhtdao.DaoConstant;
 import org.zht.framework.zhtdao.hibernate.IHibernateBaseDao;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.zht.common.dauth.thread.CurrentReqestInfo;
-import com.zht.common.dauth.thread.RequestThreadLocal;
 import com.zht.common.dauth.util.DataAuthParser;
-import com.zht.common.shiro.realm.ShiroDbRealm;
 public class HibernateBaseDaoImpl implements IHibernateBaseDao {
 
-	@Resource(name = "sessionFactory")
-    protected SessionFactory sessionFactory;
-
-    public Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+	@Resource
+	protected DynamicSessionFactory dynamicSessionFactory;
+	
+    public DynamicSessionFactory getDynamicSessionFactory() {
+		return dynamicSessionFactory;
+	}
+	public SessionFactory getSessionFactory() {
+    	SessionFactory sessionFactory=dynamicSessionFactory.determineTargetSessionFactory();
+		return sessionFactory;
+	}
+	public Session getCurrentSession() {
+        return getSessionFactory().getCurrentSession();
     }
+	
     @Override
     public String getDatabaseInfo() {
 		final StringBuilder buf = new StringBuilder("");
@@ -74,7 +78,7 @@ public class HibernateBaseDaoImpl implements IHibernateBaseDao {
      */
     @Override
     public Session getNewSession() {
-        return sessionFactory.openSession();
+    	return getSessionFactory().openSession();
     }
     @Transactional
     @Override

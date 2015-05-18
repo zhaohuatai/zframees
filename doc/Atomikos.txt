@@ -3,6 +3,11 @@
 2.com.mysql.jdbc.jdbc2.optional.MysqlXAException: XAER_INVAL: Invalid arguments (or unsupported command)
 解决：http://www.atomikos.com/Documentation/KnownProblems#MySQL_XA_bug
 
+3.*********动态数据源切换不能再事物开启之后进行，
+*********所以动态数据源切换必须在service之上的一层，完成。service之内不能切换数据源
+动态数据源事物实现：
+add dynamicSessionFactory for Atomikos
+
 自带数据源：
 	<bean id="dataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean"
 			init-method="init" destroy-method="close">

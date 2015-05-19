@@ -19,7 +19,7 @@ public class DynamicSessionFactory implements InitializingBean{
 	
 	public SessionFactory determineTargetSessionFactory(){
 		  if(this.resolvedSessionFactories==null){
-			  throw new IllegalStateException("SessionFactory dynamic router not initialized");
+			  throw new IllegalStateException("sessionFactory dynamic router is not initialized");
 		  }
 		Object lookupKey =SessionFactoryContextHolder.getSessionFactoryName();
 //	    Object lookupKey ="sessionFactory";// determineCurrentLookupKey();
@@ -45,8 +45,8 @@ public class DynamicSessionFactory implements InitializingBean{
 		    
 		    for (Map.Entry<?,?> entry : this.targetSessionFactories.entrySet()) {
 		      Object lookupKey = resolveSpecifiedLookupKey(entry.getKey());
-		      SessionFactory dataSource = resolveSpecifiedSessionFactory(entry.getValue());
-		      this.resolvedSessionFactories.put(lookupKey, dataSource);
+		      SessionFactory sessionFactory = resolveSpecifiedSessionFactory(entry.getValue());
+		      this.resolvedSessionFactories.put(lookupKey,sessionFactory);
 		      this.resolvedSessionFactoryNames.add((String) lookupKey);
 		    }
 		    if (this.defaultTargetSessionFactory != null){

@@ -44,7 +44,7 @@ public class DemoEntityServiceImpl extends BaseServiceImpl<DemoEntity> implement
 	public void dynamicDataSourceTest(){
     	
 //    	SessionFactoryContextHolder.setSessionFactoryName(SessionFactoryType.sessionFactory.name());
-    	changeFactoryType(SessionFactoryType.sessionFactory);
+    	super.changeFactoryType(SessionFactoryType.sessionFactory);
     	
 		DemoEntity entryA=new DemoEntity();
 		entryA.setCode("ABC");
@@ -56,8 +56,10 @@ public class DemoEntityServiceImpl extends BaseServiceImpl<DemoEntity> implement
 		List<?> list=baseDaoImpl.findByHql(hql);
 		System.out.println("AAAAAAAAAAAAAAA_----------"+list.get(0));
 		
-		changeFactoryType(SessionFactoryType.sessionFactoryB);
+		super.changeFactoryType(SessionFactoryType.sessionFactoryB);
 //		SessionFactoryContextHolder.setSessionFactoryName(SessionFactoryType.sessionFactoryB.name());
+		
+		
 //		if(1==1){
 //			throw new ServiceLogicalException("sd");
 //		}

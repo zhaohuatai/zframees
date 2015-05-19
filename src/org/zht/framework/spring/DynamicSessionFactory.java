@@ -51,7 +51,7 @@ public class DynamicSessionFactory implements InitializingBean{
 		    }
 		    if (this.defaultTargetSessionFactory != null){
 		      this.resolvedDefaultSessionFactory = resolveSpecifiedSessionFactory(this.defaultTargetSessionFactory);
-		    }
+		    } 
 	}
 
 	protected Object resolveSpecifiedLookupKey(Object lookupKey) {

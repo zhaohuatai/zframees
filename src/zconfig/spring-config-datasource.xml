@@ -141,7 +141,7 @@
 		<property name="maxIdleTime" value="10" />
 		<property name="maxStatements" value="0" />
 	</bean>
-
+ 
 	<bean id="c3p0dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${connection.driver_class}" />

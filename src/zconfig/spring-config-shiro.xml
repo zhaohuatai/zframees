@@ -136,7 +136,7 @@
   <bean id="shiroCacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager" />
    -->
     <bean id="shiroCacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-     <property name="cacheManager" ref="cacheManagerFactory"/>
+     <property name="cacheManager" ref="ehcacheManagerFactory"/>
     
   </bean> 
  <bean id="shiroSecurityHelper" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

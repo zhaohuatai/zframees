@@ -9,16 +9,19 @@
        http://www.springframework.org/schema/cache 
        http://www.springframework.org/schema/cache/spring-cache.xsd"
        default-lazy-init="true">
-       
+       <!-- 启用Cache注解 -->
 	   <cache:annotation-driven cache-manager="cacheManager"  proxy-target-class="true"/>
+	   
 		 <!-- cacheManager工厂类，指定ehcache.xml的位置  -->
-	   <bean id="cacheManagerFactory"  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
+	   <bean id="ehcacheManagerFactory"  class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" 
 	    	p:config-location="classpath:ehcache.xml" p:shared="true">  
 	   </bean>
 	   
 	      <!-- 声明cacheManager--> 
-	    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"  
-	        p:cacheManager-ref="cacheManagerFactory" >  
+	    <bean id="springEhcacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" >  
+	        <property name="cacheManager" ref="ehcacheManagerFactory"/> 
+	        <!-- 是否事务环绕的，如果true，则如果事务回滚，缓存也回滚，默认false -->
+	        <property name="transactionAware" value="false"/> 
 		</bean>
 		
     </beans>

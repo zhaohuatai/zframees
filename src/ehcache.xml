@@ -5,7 +5,7 @@
 		monitoring="autodetect" 
 		dynamicConfig="true">
 		
-	 <diskStore path="D://ehcahe7/diskStore" />
+	 <diskStore path="D://ehcahe/diskStore" />
 		<!--<diskStore path="java.io.tmpdir" />-->
 <!--rmi手动配置
 <cacheManagerPeerProviderFactory class="net.sf.ehcache.distribution.RMICacheManagerPeerProviderFactory"  

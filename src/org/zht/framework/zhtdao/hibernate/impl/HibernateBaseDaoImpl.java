@@ -697,10 +697,10 @@ public class HibernateBaseDaoImpl implements IHibernateBaseDao {
 		hqlBuf.append(" WHERE 1=1 ");
 		//例如限制当前部门
 		// " and "+RowMap.queryAsAlias+".id in (select id from DepartmentUser du where du.department ="++") "
-		String dataAuthExps=SpringUtils.getBean(DataAuthParser.class).parserExpList("loadDataSetFromOneEntity");
-		if(dataAuthExps!=null){
-			hqlBuf.append(" "+dataAuthExps+" ");
-		}
+//		String dataAuthExps=SpringUtils.getBean(DataAuthParser.class).parserExpList("loadDataSetFromOneEntity");
+//		if(dataAuthExps!=null){
+//			hqlBuf.append(" "+dataAuthExps+" ");
+//		}
 		Map<String,Object> paramMap=paramObject.getQueryParams();
 		Map<String,Object> queryParameter=new LinkedHashMap<String,Object>();
 		if (paramMap != null && paramMap.size() > 0) {

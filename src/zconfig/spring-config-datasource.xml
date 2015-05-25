@@ -89,7 +89,7 @@
 	</bean>
  <!-- 配置注解实现管理事务 注意@Transactional(RollbackFor=Exception.clas)-->
 	<tx:annotation-driven transaction-manager="transactionManager" 	proxy-target-class="true"  />
- <!-----------------------------------dataSource---------------------------------------------------------------->
+ <!-- ####################dataSource############################################################-->
 
 	<bean id="dataSourceDruid"  class="com.alibaba.druid.pool.DruidDataSource" 
 									init-method="init" destroy-method="close">

@@ -35,7 +35,7 @@
                  /jcaptcha/*= anon
                 /index.jsp = authc
                 /logout = anon
-                /** = authc,roles,perms
+                /** = authc
             </value>
             <!-- maxSession,authc,roles,perms -->
         </property>

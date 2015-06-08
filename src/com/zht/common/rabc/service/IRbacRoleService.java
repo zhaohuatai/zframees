@@ -7,8 +7,13 @@ package com.zht.common.rabc.service;
 
 
 import java.util.List;
+
 import org.zht.framework.data.DataSet;
+import org.zht.framework.data.POType;
+import org.zht.framework.data.ParamObject;
 import org.zht.framework.service.IBaseService;
+import org.zht.framework.util.ZBeanUtil;
+
 import com.zht.common.rabc.model.RbacRole;
 public interface IRbacRoleService extends IBaseService<RbacRole>{
  public void deleteRbacRole(Long[] ids);
@@ -25,6 +30,7 @@ public interface IRbacRoleService extends IBaseService<RbacRole>{
   * @return
   */
  public List<String> findRoleCodeUserHaveInPatternA(Long userId,Boolean isEnable);
+ public List<String> findRoleNameUserHaveInPatternA(Long userId,Boolean isEnable);
 /**
  * 模式A： user <----> role{userRole+group-userRoleRject} <----> permission
  * @param userName
@@ -40,14 +46,14 @@ public interface IRbacRoleService extends IBaseService<RbacRole>{
   * @param isEnable
   * @return
   */
- public List<String> findRoleCodeUserHaveInPatternB(Long userId,Boolean isEnable);
+// public List<String> findRoleCodeUserHaveInPatternB(Long userId,Boolean isEnable);
  /**
   * 模式B： user <----> positon <----> role{position+userRole-userRoleReject[group不再参与,职位即可起到group的作用]} <----> permission
   * @param userName
   * @param isEnable
   * @return
   */
- public List<String> findRoleCodeUserHaveInPatternB(String userName,Boolean isEnable);
+// public List<String> findRoleCodeUserHaveInPatternB(String userName,Boolean isEnable);
 
  
  /**
@@ -117,6 +123,10 @@ public interface IRbacRoleService extends IBaseService<RbacRole>{
  public void removeRolesFromGroupRole(Long[] roleIds,Long groupId);
  
  public void addRolesToGroupRole(Long[] roleIds,Long groupId);
+ 
+ 
+ 
+public List<?> findRoleComoboxData();
  
  
 }

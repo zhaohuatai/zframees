@@ -88,9 +88,12 @@ public class UIEasyStrUtil {
 				}
 				editStr.append("data-options=\""+data_options+"\"");
 				editStr.append("></textarea>");
-				queryStr.append(editStr.append(editStr.toString().replace(" data-options=\""+data_options+"\"", " ")
+				queryStr.append(editStr.toString().replace(" data-options=\""+data_options+"\"", " ")
 						.replace("name=\""+prop.getPropertyName()+"\"", " name=\"webParams["+prop.getPropertyName()+"]\" ")
-						.replace("value=\"${"+entitysimplName+"."+prop.getPropertyName()+"}\"", " ")));
+						.replace("value=\"${"+entitysimplName+"."+prop.getPropertyName()+"}\"", " "));
+//				queryStr.append(editStr.append(editStr.toString().replace(" data-options=\""+data_options+"\"", " ")
+//						.replace("name=\""+prop.getPropertyName()+"\"", " name=\"webParams["+prop.getPropertyName()+"]\" ")
+//						.replace("value=\"${"+entitysimplName+"."+prop.getPropertyName()+"}\"", " ")));
 			}else if("password".equals(editType)){
 				String data_options=" ";
 				editStr=new StringBuffer("<input type=\"password\" name=\""+prop.getPropertyName()+"\" value=\"${"+entitysimplName+"."+prop.getPropertyName()+"}\" ");

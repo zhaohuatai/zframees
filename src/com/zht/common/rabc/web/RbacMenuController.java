@@ -47,8 +47,9 @@ public class RbacMenuController extends BaseController{
     private IRbacMenuService rbacMenuService;
     @RequestMapping(value="/loadMenus")
     @ResponseBody 
-    public Object loadMenus(Long moduleId,Boolean useModule,Model model){
-    	List<AccordtionView> rbacMenuList=rbacMenuService.findMenuListByModuleId(moduleId);
+    public Object loadMenus(Long moduleId,Long userId,Boolean useModule,Model model){
+//    	List<AccordtionView> rbacMenuList=rbacMenuService.findMenuListByModuleId(moduleId);
+    	List<AccordtionView> rbacMenuList=rbacMenuService.loadMenuByUserId(moduleId,userId);
         return FastjsonUtil.convert(rbacMenuList);
     }
     
@@ -79,19 +80,20 @@ RowMap menuMap=new RowMap(RbacMenu.class)
 		DataSet dataSet = rbacMenuService.loadRbacMenuTreeGrid(paramObject);
 		return FastjsonUtil.convert(dataSet);
 	}
+ 
     @RequiresPermissions("RbacMenu:enterAddMenu")
     @RequestMapping(value="/enterAddMenu")
     public String enterAddMenu(){
         return jspPrefix+"menuAdd";
     }
-    @RequiresPermissions("RbacMenu:enterEidtMenu")
-    @RequestMapping(value="/enterEidtMenu")
+    @RequiresPermissions("RbacMenu:enterEditMenu")
+    @RequestMapping(value="/enterEditMenu")
     public String enterEidtMenu(Long id,Model model){
     	RbacMenu rbacMenu=rbacMenuService.$base_find(id);
     	setDataAttribute(model,rbacMenu,"rbacMenu");
-        return jspPrefix+"groupEdit";
+        return jspPrefix+"menuEdit";
     }
-    
+
     @RefreashAuthCacahe
     @RequiresPermissions("RbacMenu:addMenu")
     @RequestMapping(value="/addMenu")

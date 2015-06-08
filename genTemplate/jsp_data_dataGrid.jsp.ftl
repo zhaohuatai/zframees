@@ -51,7 +51,7 @@ $(function(){
    $("#${model.entitySimpleClassName ? uncap_first}DataGrid").datagrid({
 				title:"",
 				width:'100%',
-				height:(h1-(($("#easyuiqueryformTable").height()+$("#queryDivButton").height()))-28 ),
+				height:(h1-(($("#queryFormDiv").height())+($("#toolbarDiv").height()))-(3*$("#easyuiqueryform tr").length)),
 				nowrap: true,//设置为true，当数据长度超出列宽时将会自动截取
 				rownumbers: true,
 				fitColumns: false,//滚动条
@@ -72,7 +72,9 @@ $(function(){
 				{field:'id',width:20,checkbox:true},
 					<#list model.genEntityPropertyList as entityDetail>
 					<#if ((entityDetail.isList ? exists && entityDetail.isList==true))>
+					<#if ((entityDetail.generatedListDisplayOfPropertyStr ? exists ))>
 					${entityDetail.generatedListDisplayOfPropertyStr}
+					</#if>
 					</#if>
 					</#list>
 				]], onBeforeLoad:function(){ 

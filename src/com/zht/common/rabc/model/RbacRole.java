@@ -1,8 +1,8 @@
-﻿/**
- * Copyright (c) 2015 https://github.com/zhaohuatai
+/**
+ *  Copyright (c) 2015 https://github.com/zhaohuatai
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- */
+*/
 package com.zht.common.rabc.model;
 
 import java.util.HashSet;
@@ -44,7 +44,9 @@ public class RbacRole extends PKBaseEntity {
 	public RbacRole() {
         super();
 	}
-	
+	public RbacRole(Long id) {
+		this.setId(id);
+	}
 	@NotNull
 	@NotBlank
 	@Column(name = "code", length = 40, nullable = false,unique=true)
@@ -95,10 +97,6 @@ public class RbacRole extends PKBaseEntity {
 	}
 	public void setRbacRolePermissions(Set<RbacRolePermission> rbacRolePermissions) {
 		this.rbacRolePermissions = rbacRolePermissions;
-	}
-	public RbacRole(Long id) {
-        super();
-        this.setId(id);
 	}
 	public String getName() {
 		return name;

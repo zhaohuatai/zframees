@@ -24,6 +24,8 @@ public class Genmain {
 		ServiceGenerator serG=new ServiceGeneratorImpl();
 		ActionGenerator actionG=new ActionGeneratorImpl();
 		String modeClazzName="com.zht.common.dauth.model.RbacDataAccessExp";
+		
+		
 		//daoG.genAll(modeClazzName);
 		//serG.genAll(modeClazzName);
 		//actionG.generatorAction(modeClazzName, "/common/rbac/dataAccessExp", null, null);

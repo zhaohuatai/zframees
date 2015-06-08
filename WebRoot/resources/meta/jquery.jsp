@@ -5,3 +5,5 @@
 <!--  -->
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/juqery1.11/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery/juqery1.11/jquery.cookie.min.js"></script>
+
+<link href="${pageContext.request.contextPath}/resources/css/table.css" rel="stylesheet" type="text/css" /> 

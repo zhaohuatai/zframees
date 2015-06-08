@@ -12,6 +12,8 @@
 <script src="${pageContext.request.contextPath}/resources/easyui141/selfdefine/easyui.zht.dialog.loadMask.js" type="text/javascript"></script>
 
 
+<script src="${pageContext.request.contextPath}/resources/easyui141/selfdefine/easyui.zht.extern.validate.js" type="text/javascript"></script>
+
 <link href="${pageContext.request.contextPath}/resources/css/easyuitab.css"  rel="stylesheet" type="text/css"></link>
 <link href="${pageContext.request.contextPath}/resources/css/easyuiqueryform.css"  rel="stylesheet" type="text/css"></link>
 	

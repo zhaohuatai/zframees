@@ -4,117 +4,148 @@
 <%@ include file="/resources/meta/jquery.jsp" %>
 <%@ include file="/resources/meta/easyui.jsp" %>
 <%@ include file="/resources/meta/easyui-selfdefine.jsp" %>
-<%@ include file="/resources/meta/bootstrap.jsp" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <script type="text/javascript" src="${ctx}/resources/jquery/md5-min.js"></script>
-    <script type="text/javascript">
-    $(function(){
-    	$("#userName").bind("keyup", function(event){
- 		   if (event.keyCode=="13"){
- 		      $("#j_password").focus();
- 		   }
- 		});
- 		
- 		$("#password").bind("keyup", function(event){
- 		   if (event.keyCode=="13"){
- 		      $("#j_captcha").focus();
- 		   }
- 		});
- 		$("#jcaptchaCode").bind("keyup", function(event){
- 			if (event.keyCode=="13"){
- 				 $("#loginButton").focus();
- 				
- 		   }
- 		});
-    });
-    
-    function reloadValidateCode(){
-        $("#validateCodeImg").hide().attr("src","${ctx}/jcaptcha/jcaptcha.jpg?" + Math.floor(Math.random()*100)).fadeIn();
-    }
-    function convertPassword(username,password){
-    	//pwxwT1d6SMiYXYZ0ARGFhg+_94DABGioQOq2tTUO0AXYow
-    	var salt=username+"@zhtframework_94DABGioQOq2tTUO0AXYow";
-    //	var salt=username;
-		//return hex_md5(password+"{"+salt+"}");
-		return hex_md5(salt+password);
-	}
-    function dologin(){
-    	var userName = $("#userName");
-		var password = $("#password");
-		if(userName.val().length < 1){
-			alert("请输入帐号");
-			userName.focus();
-			return;
-		}
-		if(password.val().length < 2){
-			password.focus();
-			alert("密码至少2位");
-			return;
-		}
-		$("#password").val(convertPassword(userName.val().trim(),password.val().trim()));
-		ZHTAJAX.validateFromCallback($("#loginForm"), function(json){
-			if(json.statusCode == ZHT.statusCode.error) {
-				$("#password").val("");
-				$("#jcaptchaCode").val("");
-				reloadValidateCode();
-				if(json.message && alertMsg){
-					$.messager.alert('提示',json.message,'error');
-				}
-			}else if(json.statusCode == ZHT.statusCode.serverError) {
-				$("#password").val("");
-				$("#jcaptchaCode").val("");
-				reloadValidateCode();
-				if(json.message && alertMsg){
-					$.messager.alert('提示',json.message,'error');
-				}
-			}else {
-				$("#password").val("");
-				$("#jcaptchaCode").val("");
-				reloadValidateCode();
-				if(json.message && alertMsg){
-					window.top.location.href="${ctx}/rbac/user/core";
-				}
-			};
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+<title></title>
+<link rel="stylesheet" id="buttons-css" href="./resources/loginsource/buttons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="dashicons-css" href="./resources/loginsource/dashicons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="login-css" href="./resources/loginsource/login.min.css" type="text/css" media="all">
+ <script type="text/javascript" src="${ctx}/resources/jquery/md5-min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#userName").bind("keyup", function(event){
+		   if (event.keyCode=="13"){
+		      $("#password").focus();
+		   }
 		});
-    }
-    </script>
-    <style type="text/css">
-    .container {
-    width:300px;
-	  margin-left: auto;
-	  margin-right: auto;
-	  *zoom: 1;
+		
+		$("#password").bind("keyup", function(event){
+		   if (event.keyCode=="13"){
+		      $("#jcaptchaCode").focus();
+		   }
+		});
+		$("#jcaptchaCode").bind("keyup", function(event){
+			if (event.keyCode=="13"){
+				 $("#loginButton").focus();
+				
+		   }
+		});
+});
+
+function reloadValidateCode(){
+    $("#validateCodeImg").hide().attr("src","${ctx}/jcaptcha/jcaptcha.jpg?" + Math.floor(Math.random()*100)).fadeIn();
+}
+function convertPassword(username,password){
+	//pwxwT1d6SMiYXYZ0ARGFhg+_94DABGioQOq2tTUO0AXYow
+	var salt=username+"@zhtframework_94DABGioQOq2tTUO0AXYow";
+//	var salt=username;
+	//return hex_md5(password+"{"+salt+"}");
+	return hex_md5(salt+password);
+}
+function dologin(){
+	var userName = $("#userName");
+	var password = $("#password");
+	if(userName.val().length < 1){
+		$("#login_error").empty();
+		$("#login_error").append(" <strong>错误</strong>： 请输入帐号");
+		$("#login_error").css('display','block'); 
+		userName.focus();
+		return;
 	}
-    </style>
-  </head>
-  
-  <body>
-    <div class='container'>
-      <form  id="loginForm" class='form-signin' role='form' action="${ctx}/rbac/user/login" method="post">
-        <h4 class='form-signin-heading'>用户登录</h4>
-        <input type='text' id="userName" name="userName" class='form-control' placeholder='请输入用户名' required autofocus>
-            <div style='height:10px;clear:both;display:block'></div>
-        <input type='password'  id="password" name="password" class='form-control' placeholder='请输入密码' required>
-         <div style='height:10px;clear:both;display:block'></div>
-       <input type="text" style="height: 38;border-radius:3px;" id="jcaptchaCode"  name="jcaptchaCode" placeholder='请输入密验证码'  />
-       
-       <img border="0" width="90" height="40" id="validateCodeImg" src="${pageContext.request.contextPath}/jcaptcha/jcaptcha.jpg" onclick="javascript:reloadValidateCode();" />
-        
-         <div style='height:10px;clear:both;display:block'></div>
-         <!-- 
-        <div class='checkbox'>
-          <label>
-            <input type='checkbox' id="loginButton" name="rememberMe" value='true'> 记住登录状态
-          </label>
-        </div>
-         -->
-        <button class='btn btn-lg btn-primary btn-block' type='button' onclick="dologin()">登录</button>
-        <h2>${massage}</h2>
-      </form>
-    </div> 
-  </body>
-</html>
+	if(password.val().length < 3){
+		
+		$("#login_error").empty();
+		$("#login_error").append("<strong>错误</strong>：  密码至少3位");
+		$("#login_error").css('display','block'); 
+		password.focus();
+		return;
+	}
+	$("#password").val(convertPassword(userName.val().trim(),password.val().trim()));
+	ZHTAJAX.validateFromCallback($("#loginForm"), function(json){
+		if(json.statusCode == ZHT.statusCode.error) {
+			$("#password").val("");
+			$("#jcaptchaCode").val("");
+			reloadValidateCode();
+			if(json.message && alertMsg){
+				$("#login_error").empty();
+				$("#login_error").append("<strong>错误</strong>：  "+json.message);
+				$("#login_error").css('display','block'); 
+			}
+		}else if(json.statusCode == ZHT.statusCode.serverError) {
+			$("#password").val("");
+			$("#jcaptchaCode").val("");
+			reloadValidateCode();
+			if(json.message && alertMsg){
+				$("#login_error").empty();
+				$("#login_error").append("<strong>错误</strong>：  "+json.message);
+				$("#login_error").css('display','block'); 
+			}
+		}else {
+			$("#password").val("");
+			$("#jcaptchaCode").val("");
+			reloadValidateCode();
+			if(json.message && alertMsg){
+				window.top.location.href="${ctx}/rbac/user/core";
+			}
+		};
+	});
+}
+</script>
+</head>
+<body class="login login-action-login wp-core-ui  locale-zh-cn">
+<div id="login">
+<div id="login_error" style="display: none;"></div>
+<!--
+<h1><a href="" title="" tabindex="-1"></a></h1>
+  -->
+<form name="loginform" id="loginForm" action="${ctx}/rbac/user/login" method="post">
+	<p>
+		<label for="user_login">用户名<br>
+		<input type="text" id="userName" name="userName"  class="input" value="" size="20"></label>
+	</p>
+	<p>
+		<label for="user_pass">密码<br>
+		<input type="password" name="password" id="password" class="input" value="" size="20"></label>
+	</p>
+	<p>
+	<label for="jcaptchaCode">验证码<br>
+		 <input type="text"  style="width:160px;height: 40px" id="jcaptchaCode"  name="jcaptchaCode" class="input" value="" maxlength="18" size="10">
+		 <img style="margin: 0px;border: 0px" border="0" width="90" height="35" id="validateCodeImg" src="${pageContext.request.contextPath}/jcaptcha/jcaptcha.jpg" onclick="javascript:reloadValidateCode();" />
+	</p>
+	<link href="./resources/loginsource/login.css" rel="stylesheet" media="all">
+
+<ul class="iteblog-open">
+	<li>
+		<a id="loginButton" class="zg-btn-blue" href="#" onclick="dologin();">
+		</span>登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+		</a>
+	</li>
+</ul>
+</form>
+
+<p id="nav">
+<!-- 
+	<a href="" title="找回密码">忘记密码？</a>
+	 -->
+</p>
+
+<script type="text/javascript">
+function wp_attempt_focus(){
+setTimeout( function(){ try{
+d = document.getElementById('user_login');
+d.focus();
+d.select();
+} catch(e){}
+}, 200);
+}
+
+wp_attempt_focus();
+if(typeof wpOnload=='function')wpOnload();
+</script>
+
+	</div>
+		<div class="clear"></div>
+	</body></html>

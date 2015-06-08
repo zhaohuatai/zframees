@@ -22,7 +22,6 @@
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <entry key="logout" value-ref="logoutFilter"/>
                 <entry key="maxSession" value-ref="maxSessionControlFilter"/>
-                <entry key="ssl" value-ref="sslFilter"/>
             </util:map>
         </property>
         
@@ -35,7 +34,7 @@
                  /jcaptcha/*= anon
                 /index.jsp = authc
                 /logout = anon
-                /** = authc
+                /** = anon
             </value>
             <!-- maxSession,authc,roles,perms -->
         </property>
@@ -73,10 +72,6 @@
            </bean>
           </property>
       </bean>
-   
-   <bean id="sslFilter" class="org.apache.shiro.web.filter.authz.SslFilter">  
-    <property name="port" value="8443"/>  
-	</bean>
 	
    <bean id="formAuthenticationFilter"  class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
         <property name="usernameParam" value="userName"/>
@@ -110,11 +105,11 @@
     
     <!-- 1800000 -->
      <bean id="sessionValidationScheduler" class="org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler">
-         <property name="interval" value="300000"/>
+         <property name="interval" value="1800000"/>
         <property name="sessionManager" ref="sessionManager"/>
     </bean>
        <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-        <property name="globalSessionTimeout" value="300000"/>
+        <property name="globalSessionTimeout" value="1800000"/>
         <property name="sessionDAO" ref="cacheSessionDAO"/>
         <property name="deleteInvalidSessions" value="true"/>
 

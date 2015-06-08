@@ -6,6 +6,7 @@
 package com.zht.common.rabc.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.zht.framework.data.DataSet;
 import org.zht.framework.data.ParamObject;
@@ -84,5 +85,7 @@ public interface IRbacPermissionService extends IBaseService<RbacPermission>{
  
  public void  removePermissionsFromUserPermissionReject(Long[] permissionIds,Long userId);
  
- 
+
+ //2015 0526 10:18
+ public List<Map> findAllPermissionList();
 }

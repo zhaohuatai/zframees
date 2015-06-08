@@ -15,13 +15,39 @@ import org.zht.framework.data.RowMap;
 import org.zht.framework.zhtdao.identity.PKBaseEntity;
 @SuppressWarnings("hiding")
 public interface IBaseService<M extends PKBaseEntity> {
-	
+	/**
+	 * 保存hibernate映射实体
+	 * @param m : 要持久化的model类
+	 */
 	public void $base_save(M m) ;
-	public void $base_update(M m) ;
 	
+	/**
+	 * 更新hibernate映射实体
+	 * @param m : 要更新的model类
+	 */
+	public void $base_update(M m) ;
+	/**
+	 *  更新hibernate映射实体
+	 * @param m : 要更新的model类
+	 * @param ignorNull : 是否忽略空属性，false： 完全覆盖数据库，true:忽略待更新实体值为null的属性
+	 */
+	public void $base_update(M m,boolean ignorNull);
+	
+	/**
+	 * 保存或 更新hibernate映射实体
+	 * @param m ： 要更新的model类
+	 */
 	public void $base_saveOrUpdate(M m) ;
 	//-----------------------------------
+	/**
+	 *  单纯删除model实体类
+	 * @param m : 要更新的model类
+	 */
 	public void $base_delete$Just(M m);
+	/**
+	 *  根据ID删除
+	 * @param id
+	 */
 	public void $base_delete$Just(Serializable id);
 	public void $base_deleteByIdsInCase$Just(Serializable[] ids);
 	public void $base_deleteAll();

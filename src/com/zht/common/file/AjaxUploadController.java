@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zht.framework.exception.FileNameLengthLimitExceededException;
 import org.zht.framework.exception.InvalidExtensionException;
-import org.zht.framework.message.WebUploaderError;
-import org.zht.framework.message.webUploaderJaon;
 import org.zht.framework.web.controller.BaseController;
 import org.zht.framework.web.utils.FileUploadUtils;
 @Controller 

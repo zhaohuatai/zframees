@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.Resource;
-
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -34,6 +32,7 @@ import org.zht.framework.service.IBaseService;
 import org.zht.framework.spring.DynamicSessionFactory;
 import org.zht.framework.spring.SessionFactoryContextHolder;
 import org.zht.framework.spring.SpringUtils;
+import org.zht.framework.util.ZPropertyUtil;
 import org.zht.framework.util.ZBeanUtil;
 import org.zht.framework.util.ZStrUtil;
 import org.zht.framework.zhtdao.base.impl.BaseDaoImpl;
@@ -130,10 +129,17 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 		if(isMultiTreeRoot!=null){
 			throw new ServiceLogicalException(isMultiTreeRoot);
 		}
+		//-----------------------------------------------------------------------
 		String checkUniqueRes=checkUnique(m);
 		if(checkUniqueRes!=null){
 			throw new ServiceLogicalException(checkUniqueRes);
 		}
+		//--------------------checkmanyTone$OneToOneNullForeign---------------------------------------------------
+		String isNullAblezz=checkmanyTone$OneToOneNullForeign(m);
+		if(isNullAblezz!=null){
+			throw new ServiceLogicalException(isNullAblezz);
+		}
+		//-----------------------------------------------------------------------
 		generateCurrentTimeStamp(m);
 		baseDaoImpl.saveOrUpdate(m);
 	}
@@ -168,9 +174,50 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 			if(checkUniqueRes!=null){
 				throw new ServiceLogicalException(checkUniqueRes);
 			}
+			//--------------------checkmanyTone$OneToOneNullForeign---------------------------------------------------
+			String isNullAblezz=checkmanyTone$OneToOneNullForeign(m);
+			if(isNullAblezz!=null){
+				throw new ServiceLogicalException(isNullAblezz);
+			}
 			generateCurrentTimeStamp(m);
+			//-------------------------------------------------------
 			M temp=(M) baseDaoImpl.find(this.getEntityClass(), m.getId());//根据id 查找 对应的数据
 			ZBeanUtil.copy(m, temp, true);//复制
+			baseDaoImpl.saveOrUpdate(temp);
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void $base_update(M m,boolean ignorNull) {
+			if(m==null||m.getId()==null){
+				throw new ServiceLogicalException("提交数据为空，请检查数据");
+			}
+			//------------------此处校验可以去掉，提高效率-------------------------------------
+			//检查非空的字段
+			String checkNotNullRes=checkNotNull(m);//找到第一个不能为空的，但是提交数据为空，停止运行 ，抛出异常
+			if(checkNotNullRes!=null){
+				throw new ServiceLogicalException(checkNotNullRes);
+			}
+			//检查长度
+			String checkLenth=checkLenth(m);//检查长度
+			if(checkLenth!=null){
+				throw new ServiceLogicalException(checkLenth);
+			}
+			//-------------------------------------------------------
+			
+			//如果是树形结构
+			String checkParentRes=checkParentNodeIfTree(m);
+			if(checkParentRes!=null){
+				throw new ServiceLogicalException(checkParentRes);
+			}
+			//检查唯一性的字段
+			String checkUniqueRes=checkUnique(m);
+			if(checkUniqueRes!=null){
+				throw new ServiceLogicalException(checkUniqueRes);
+			}
+			generateCurrentTimeStamp(m);
+			M temp=(M) baseDaoImpl.find(this.getEntityClass(), m.getId());//根据id 查找 对应的数据
+			ZBeanUtil.copy(m, temp, ignorNull);//复制
 			baseDaoImpl.saveOrUpdate(temp);
 		}
 //---------------------------------------------$base_update------E-----------------------------------------------------	 
@@ -365,8 +412,68 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 			 }
 			return null;
 		 }
-		 
-
+		
+		@SuppressWarnings("unchecked")
+		private String  checkmanyTone$OneToOneNullForeign(M m){
+			// final PersistentClass clazz = factory.getConfiguration().getClassMapping(m.getClass().getName()); 
+			 if(clazz==null){
+				 throw new ServiceLogicalException("[系统错误]未找到该数据映射类，请联系管理员");
+			 }
+			final Iterator<Property> iterator = clazz.getPropertyIterator();
+			if(iterator==null){
+				 throw new ServiceLogicalException("[系统错误]未找到该数据表中任何字段，请联系管理员");
+			} 
+			// MethodAccess access = MethodAccess.get(m.getClass());
+			while (iterator.hasNext()) {
+				Property property = iterator.next();
+				if("id".equals(property.getName())){
+					continue;
+				}
+				Field field=null;
+				try {
+					 field=m.getClass().getDeclaredField(property.getName());
+					if(!(field.isAnnotationPresent(javax.persistence.ManyToOne.class)||field.isAnnotationPresent(javax.persistence.OneToOne.class))){
+						continue;
+					}
+				}catch (Exception e) {
+					continue;
+				}
+				Iterator<?> columnIterator = property.getColumnIterator();
+				if (columnIterator.hasNext()) {
+					 Column column = (Column) columnIterator.next();
+					 Object value = (Object)access.invoke(m, "get"+ZStrUtil.toUpCaseFirst(property.getName()));
+					if (!column.isNullable()) {
+						 if(ZStrUtil.trimToNullIfStr(value)==null){
+							return ("必填字段 ["+property.getName()+"] 为空，请检查数据");
+						 }
+						 MethodAccess  accessZZZ =MethodAccess.get(value.getClass());
+						 Object foreignModelId=(Object)accessZZZ.invoke(value, "getId");
+						 if(foreignModelId==null){
+							 return ("必填字段 ["+property.getName()+"] 为空，请检查数据");
+						 }
+					}else{
+						if(ZStrUtil.trimToNullIfStr(value) != null){
+							Object foreignModelId =null;
+							    foreignModelId =ZPropertyUtil.getInvokeValue(value,"getId");
+							    
+								if(foreignModelId!=null&&foreignModelId.equals(-972855736L)){
+									throw new ServiceLogicalException("[系统错误]，请联系管理员");
+								}
+								if (foreignModelId == null) {
+									value=null;
+									access.invoke(m, "set"+ZStrUtil.toUpCaseFirst(property.getName()),value);
+								}
+//							
+						}
+//						else{
+//							valueTemp=null;
+//							access.invoke(m, "set"+ZStrUtil.toUpCaseFirst(property.getName()),valueTemp);
+//						}
+					}
+				}
+			 }
+			return null;
+		 }
 		 private String checkUnique(M m){
 //			 final PersistentClass clazz = factory.getConfiguration().getClassMapping(m.getClass().getName()); 
 			 if(clazz==null){

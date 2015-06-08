@@ -1,7 +1,7 @@
-﻿/**
+/**
  * Copyright (c) 2015 https://github.com/zhaohuatai
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ *  Licensed under the Apache License, Version 2.0 (the "License");
  */
 package com.zht.common.rabc.model;
 import javax.persistence.CascadeType;
@@ -14,10 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-
 import org.zht.framework.zhtdao.identity.PKBaseEntity;
-
-import com.zht.common.sys.model.Position;
 import com.zht.common.sys.model.UserDetail;
 /**
  * 
@@ -107,13 +104,6 @@ public class RbacUser extends PKBaseEntity  {
 	@JoinColumn(name = "defaultRole_id")
 	private RbacRole defaultRbacRole;
 	
-	/**
-	 * 默认职位
-	 */
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "defaultPosition_id")
-	private Position defaultPosition;
-	
 
 	public RbacRole getDefaultRbacRole() {
 		return defaultRbacRole;
@@ -193,12 +183,6 @@ public class RbacUser extends PKBaseEntity  {
 		this.userDetail = userDetail;
 	}
 
-	public Position getDefaultPosition() {
-		return defaultPosition;
-	}
 
-	public void setDefaultPosition(Position defaultPosition) {
-		this.defaultPosition = defaultPosition;
-	}
 	
 }

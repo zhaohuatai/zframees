@@ -32,5 +32,7 @@ public interface IRbacMenuService extends IBaseService<RbacMenu>{
 	  * @param id： grouoId
 	  */
 	 public void deleteRbacMenu(Serializable id);
+
+	 public List<AccordtionView> loadMenuByUserId(Long moduleId, Long userId);
 	 
 }

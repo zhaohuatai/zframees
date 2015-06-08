@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zht.framework.data.DataSet;
@@ -18,6 +19,7 @@ import org.zht.framework.exception.ServiceLogicalException;
 import org.zht.framework.service.impl.BaseServiceImpl;
 import org.zht.framework.util.ZBeanUtil;
 
+import com.zht.common.event.RoleOrDeptChangedEvent;
 import com.zht.common.rabc.dao.IRbacRoleDao;
 import com.zht.common.rabc.model.RbacGroup;
 import com.zht.common.rabc.model.RbacGroupRole;
@@ -29,7 +31,7 @@ import com.zht.common.rabc.model.RbacUserRoleReject;
 //import com.zht.common.rabc.model.SysDepartmentRole;
 import com.zht.common.rabc.service.IRbacGroupService;
 import com.zht.common.rabc.service.IRbacRoleService;
-import com.zht.common.sys.service.IPositionService;
+//import com.zht.common.sys.service.IPositionService;
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IRbacRoleService{
@@ -37,8 +39,8 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 	private IRbacRoleDao  rbacRoleDao;
 	@Autowired 
 	private IRbacGroupService rbacGroupService;
-	@Autowired 
-	private IPositionService positionService;
+//	@Autowired 
+//	private IPositionService positionService;
 	@Override
 	public void deleteRbacRole(Long[] ids) {
 		if(ids==null||ids.length==0){
@@ -106,49 +108,57 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			}
 			return finalList;
 		}
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public List<String> findRoleCodeUserHaveInPatternB(Long userId,Boolean isEnable) {
-			// from position + from userRole - from userRoleReject
-			//1:roleIdFromPosition(+)
-			List<Long> positionIds=positionService.findPositionIdsByRbacUserId(userId);
-			List<String> roleIdFromPosition=new ArrayList<String>();
-			if(!ZBeanUtil.isEmptyValue(positionIds)){
-				String hql="select p.rbacRole.code from Position p where p.id in (:positionIds) and p.rbacRole.enabled=:isEnable";
-				 roleIdFromPosition=(List<String>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC)
-				 					.addAllowNull("positionIds", positionIds).addAllowNull("isEnable", isEnable));
+		 public List<String> findRoleNameUserHaveInPatternA(Long userId,Boolean isEnable){
+			List<String> list= findRoleCodeUserHaveInPatternA(userId,isEnable);
+			if(list==null||list.size()==0){
+				return null;
 			}
-			
-			//2: fromUserRole(+)
-			List<String> fromUserRole=findRoleCodeInUserRoleByUserId(userId,isEnable);
-			//3: fromUserRoleReject(-)
-			List<String> fromUserRoleReject=findRoleCodeInUserRoleRejectByUserId(userId,isEnable);
-		
-			List<String> finalList=new ArrayList<String>();
-			
-			if(roleIdFromPosition!=null&&roleIdFromPosition.size()>0){
-				finalList.addAll(roleIdFromPosition);
-			}
-			
-			if(fromUserRole!=null&&fromUserRole.size()>0){
-				finalList.addAll(fromUserRole);
-			}
-			finalList=(List<String>) ZBeanUtil.removeDuplicateWithOrder(finalList);
-			if(fromUserRoleReject!=null&&fromUserRoleReject.size()>0){
-				finalList.removeAll(fromUserRoleReject);
-			}
-			return finalList;
-		}
+			String hql="select name from RbacRole r where r.code in(:idList)";
+			List<String> list2=(List<String>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("idList", list));
+			return list2;
+		 }
+//		@SuppressWarnings("unchecked")
+//		@Override
+//		public List<String> findRoleCodeUserHaveInPatternB(Long userId,Boolean isEnable) {
+//			// from position + from userRole - from userRoleReject
+//			//1:roleIdFromPosition(+)
+//			List<Long> positionIds=positionService.findPositionIdsByRbacUserId(userId);
+//			List<String> roleIdFromPosition=new ArrayList<String>();
+//			if(!ZBeanUtil.isEmptyValue(positionIds)){
+//				String hql="select p.rbacRole.code from Position p where p.id in (:positionIds) and p.rbacRole.enabled=:isEnable";
+//				 roleIdFromPosition=(List<String>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC)
+//				 					.addAllowNull("positionIds", positionIds).addAllowNull("isEnable", isEnable));
+//			}
+//			
+//			//2: fromUserRole(+)
+//			List<String> fromUserRole=findRoleCodeInUserRoleByUserId(userId,isEnable);
+//			//3: fromUserRoleReject(-)
+//			List<String> fromUserRoleReject=findRoleCodeInUserRoleRejectByUserId(userId,isEnable);
+//		
+//			List<String> finalList=new ArrayList<String>();
+//			
+//			if(roleIdFromPosition!=null&&roleIdFromPosition.size()>0){
+//				finalList.addAll(roleIdFromPosition);
+//			}
+//			
+//			if(fromUserRole!=null&&fromUserRole.size()>0){
+//				finalList.addAll(fromUserRole);
+//			}
+//			finalList=(List<String>) ZBeanUtil.removeDuplicateWithOrder(finalList);
+//			if(fromUserRoleReject!=null&&fromUserRoleReject.size()>0){
+//				finalList.removeAll(fromUserRoleReject);
+//			}
+//			return finalList;
+//		}
 
-		@Override
-		public List<String> findRoleCodeUserHaveInPatternB(String userName,Boolean isEnable) {
-			 Long userId=(Long) baseDaoImpl.findIdByUnique(RbacUser.class, "userName", userName);
-			 if(userId==null){
-				 return null;
-			 }
-			 return findRoleCodeUserHaveInPatternA( userId,  isEnable);
-		}
+//		@Override
+//		public List<String> findRoleCodeUserHaveInPatternB(String userName,Boolean isEnable) {
+//			 Long userId=(Long) baseDaoImpl.findIdByUnique(RbacUser.class, "userName", userName);
+//			 if(userId==null){
+//				 return null;
+//			 }
+//			 return findRoleCodeUserHaveInPatternA( userId,  isEnable);
+//		}
 		
 		
 		@SuppressWarnings("unchecked")
@@ -308,6 +318,8 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			DataSet dataSetp=baseDaoImpl.loadDataSet(hql,po);
 			return dataSetp;
 		}
+		 @Autowired  
+		  private ApplicationContext applicationContext; 
 		@Override
 		public void removeRolesFromUserRole(Long[] roleIds, Long userId) {
 			if(userId==null||roleIds==null||roleIds.length==0){
@@ -317,7 +329,11 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			baseDaoImpl.executeUpdate(hql, new ParamObject(POType.H_NO_NC).
 					addAllowNull("userId", userId).
 					addAllowNull("roleIds", roleIds));
-			
+			try{
+				applicationContext.publishEvent(new RoleOrDeptChangedEvent(userId));
+			}catch(Exception e){
+				
+			}
 		}
 
 		@SuppressWarnings("unchecked")
@@ -377,7 +393,11 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			if(grsList!=null&&grsList.size()>0){
 				baseDaoImpl.saveOrUpdate(grsList);
 			}
-			
+			try{
+				applicationContext.publishEvent(new RoleOrDeptChangedEvent(userId));
+			}catch(Exception e){
+				
+			}
 		}
 //--------------------------GROUP$S--------------------------------------------------------------------------------------------	
 	@SuppressWarnings("unchecked")
@@ -539,7 +559,11 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 	}
 
 
-
-
+	@Override
+	public List<?> findRoleComoboxData(){
+		String hql=" select new map( r.id as id ,r.name as name ) from RbacRole r ";
+		List<?> list= baseDaoImpl.findJustList(hql,new ParamObject(POType.H_NO_NC));
+		return list;
+	}
 	
 }

@@ -45,6 +45,14 @@ public class EndecryptUtils {
     
     	 System.out.println("encptyedPasswod :{"+encptyPass+"}");
     }
+    public static String[] genDefaultUserPassSalt(String userName,String password){
+    	String page_salt=GlobleConstant.pageSalt;
+    	String password_from_page= new Md5Hash(password,userName+page_salt,1).toString();
+    	String genSalt=genRandomSalt();
+    	String encptyPass=genPassword(password_from_page,genSalt,2);
+    	String[] res=new String[]{encptyPass,genSalt};
+    	return res;
+    }
     
     //15+22+32
     public static String genSalt(String userName){

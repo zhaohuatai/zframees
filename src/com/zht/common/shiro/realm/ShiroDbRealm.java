@@ -23,14 +23,11 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.zht.framework.redis.jedis.SerializeUtil;
-import org.zht.framework.util.ConfigUtil;
 
 import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacPermissionService;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
-import com.zht.common.shiro.impl.redis.cache.RedisShiroCache;
 
 public class ShiroDbRealm extends AuthorizingRealm {
 
@@ -51,16 +48,9 @@ public class ShiroDbRealm extends AuthorizingRealm {
     	 List<String> roles=new ArrayList<String>();
     	 List<String> perms=new ArrayList<String>();
          String userName = (String) principals.getPrimaryPrincipal();
-         
-         String rabc_pattern=ConfigUtil.getConfig("system.properties", "rabc_pattern","A");
+         roles=roleService.findRoleCodeUserHaveInPatternA(userName,true);
+         perms=permissionService.findAllPermsUserHaveAndInDefaultRoleInPatternA(userName);	
         
-         if("A".equals(rabc_pattern)){
-        	roles=roleService.findRoleCodeUserHaveInPatternA(userName,true);
-            perms=permissionService.findAllPermsUserHaveAndInDefaultRoleInPatternA(userName);	
-         }else {
-        	roles=roleService.findRoleCodeUserHaveInPatternB(userName,true);
-            perms=permissionService.findAllPermsUserHaveAndInDefaultRoleInPatternB(userName);	
-         }
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.addRoles(roles);
         authorizationInfo.addStringPermissions(perms);
@@ -147,15 +137,10 @@ public class ShiroDbRealm extends AuthorizingRealm {
     public void clearAllCachedAuthorizationInfo() {
         Cache<Object, AuthorizationInfo> cache = getAuthorizationCache();
         if (cache != null&&cache.size()>0) {
-        	if(cache instanceof RedisShiroCache){
-        		cache.clear();
-        	}else{
-        		Set<?> keys=cache.keys();
-                for (Object key : keys) {
-                    cache.remove(key);
-                }
-        	}
-        	
+        	Set<?> keys=cache.keys();
+            for (Object key : keys) {
+                cache.remove(key);
+            }
         }
     }
  

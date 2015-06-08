@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -487,6 +488,23 @@ public class RbacPermissionServiceImpl extends BaseServiceImpl<RbacPermission> i
 			baseDaoImpl.executeUpdate(hql, new ParamObject(POType.H_NO_NC).addAllowNull("userId", userId).addAllowNull("permissionsIds", permissionIds));
 	}
 
+	/**
+	 * jiangjm 20150526 10:20
+	 */
+	@Override
+	public List<Map> findAllPermissionList() {
+		String hql = " select p.id as id ,p.code as text @from RbacPermission p order by p.id ";
+
+		DataSet dataSet = baseDaoImpl.loadDataSet(hql, new ParamObject(POType.H_NO_NC));
+		List<Map> mapList = new ArrayList<Map>();
+		for(int i=0;i<dataSet.getRows().size();i++){
+			Map root = dataSet.getRows().get(i);
+			//	RbacMenuUtil.traverse(root, dataSet.getRows());
+			mapList.add(root);
+		}
+	
+		return mapList;
+	}
 
 
 }

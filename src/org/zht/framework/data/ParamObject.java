@@ -71,7 +71,12 @@ public class ParamObject implements Serializable{
 		Object res=webParams.get(key);
 		return ZStrUtil.trimToEmptyIfStr(res);
 	}
-	
+	public  void addReqParam(String key,Object value){
+		if(this.getWebParams()==null||key==null||key.length()==0){
+			return ;
+		}
+		webParams.put(key, value);
+	}
 	/**
 	 * 本方法校验参数是否是null empty 空集合  如果为空，参数将不参与sql查询
 	 * @param key
@@ -88,7 +93,7 @@ public class ParamObject implements Serializable{
 				 queryParams.put(key, item);
 			}else{
 				if(!isValueEmpty){
-					 queryParams.put(key, item);
+				queryParams.put(key, item);
 				}
 			}
 		}
@@ -107,7 +112,7 @@ public class ParamObject implements Serializable{
 			}
 		}
 		return this;
-	}	
+	}
 	public void initType(POType initType){
 		 switch (initType) { 
 		 	case S_O_C:  

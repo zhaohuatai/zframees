@@ -1,4 +1,14 @@
 package com.zht.common.sys.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+
+import com.zht.common.rabc.model.RbacRolePermission;
+
 @org.zht.framework.annos.TreeConstruct()
 @javax.persistence.Entity()
 @javax.persistence.Table(name = "sys_department")
@@ -28,6 +38,8 @@ public class Department extends org.zht.framework.zhtdao.identity.PKBaseEntity{
 	@javax.persistence.OneToMany(fetch=javax.persistence.FetchType.LAZY,cascade=javax.persistence.CascadeType.ALL, mappedBy="parentDepartment")
 	private java.util.Set<com.zht.common.sys.model.Department> childDepartments;
 	
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL, mappedBy="department")
+	private Set<DepartmentUserDetail> departmentUserDetails = new HashSet<DepartmentUserDetail>(0);
 	
 	private java.util.Date dfs;
 	
@@ -79,6 +91,13 @@ public class Department extends org.zht.framework.zhtdao.identity.PKBaseEntity{
 	}
 	public java.util.Date getDfs(){
 		return this.dfs;
+	}
+	public Set<DepartmentUserDetail> getDepartmentUserDetails() {
+		return departmentUserDetails;
+	}
+	public void setDepartmentUserDetails(
+			Set<DepartmentUserDetail> departmentUserDetails) {
+		this.departmentUserDetails = departmentUserDetails;
 	}
 	
 	

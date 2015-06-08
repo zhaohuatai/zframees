@@ -5,6 +5,9 @@
  */
 package com.zht.common.rabc.web;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -65,7 +68,17 @@ public class RbacPermissionController extends BaseController{
 	    DataSet dataSet= rbacPermissionService.$base_loadDataSetFromOneEntity(paramObject, rowMap);
 	    return FastjsonUtil.convert(dataSet);
     }
-
+	//----------------JJM 2015-0527 10:18
+	@RequiresPermissions("RbacPermission:loadPermissionList")
+    @SuppressWarnings("rawtypes")
+	@RequestMapping(value="/loadPermissionList")
+    @ResponseBody 
+    public Object loadPermission() throws Exception{
+    	List<Map> list=rbacPermissionService.findAllPermissionList();  
+        return FastjsonUtil.convert(list);
+    }
+	
+	
 	@RequiresPermissions("RbacPermission:enterAddPermission")
     @RequestMapping(value="/enterAddPermission")
     public String enterAddPermission(){

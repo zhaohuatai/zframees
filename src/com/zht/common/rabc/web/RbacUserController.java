@@ -37,12 +37,14 @@ import org.zht.framework.web.controller.BaseController;
 import org.zht.framework.web.utils.FastjsonUtil;
 
 import com.zht.common.rabc.aop.RefreashAuthCacahe;
+import com.zht.common.rabc.model.RbacRole;
 import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacPermissionService;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
 import com.zht.common.shiro.info.ShiroSessionUser;
 import com.zht.common.shiro.util.ShiroUserUtil;
+import com.zht.common.sys.model.Position;
 /**
  * 
 * @ClassName :RbacUserController     
@@ -270,7 +272,8 @@ public class RbacUserController extends BaseController{
     	rbacPermissionService.removePermissionsFromUserPermissionReject(permissionIds,userId);
 		return ajaxDoneSuccess("数据修改成功 ");
     }    
-    //--------------------------------------------------
+ //----------------------------------------------------------------------------------------------------
+	
 	@ResponseBody 
     @RequestMapping(value="/login")
     public Object login(HttpServletRequest request,Model model,String userName, String password,String jcaptchaCode) {
@@ -303,16 +306,33 @@ public class RbacUserController extends BaseController{
            } 
 	    	  //验证是否登录成功  
 	          if(currentUser.isAuthenticated()){ 
+	        	  System.out.println("用户[" + userName + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");  
+	        	  RbacUser rabcUser=rbacUserService.findUserByName(userName);
 	        	  ShiroSessionUser suser=new ShiroSessionUser();
-	        	  suser.setCurrentRoleCode("admin");
+	        	  RbacRole role=rabcUser.getDefaultRbacRole();
+	        	  com.zht.common.sys.model.UserDetail userDetail= rabcUser.getUserDetail();
+	        	  if(userDetail==null){
+	        		  return ajaxDoneError("未知账户 ，请联系管理员");
+	        	  }
+	        	  Position position= userDetail.getDefaultPosition();
+	        	  if(position==null){
+	        		  return ajaxDoneError("该用户未分配职位，请联系管理员");
+	        	  }
+	        	  com.zht.common.sys.model.Department dept =position.getDepartment();
+	        	  if(dept==null){
+	        		  return ajaxDoneError("该用户未分配部门，请联系管理员");
+	        	  }
+	        	  suser.setCurrentRoleCode(role==null?ShiroUserUtil.ANONYMOUS:role.getCode());
 	        	  currentUser.getSession().setAttribute(ShiroUserUtil.SHIROSESSIONUSER, suser);
-	              System.out.println("用户[" + userName + "]登录认证通过(这里可以进行一些认证通过后的一些系统参数初始化操作)");  
+	        	  
+	            
 	              return ajaxDoneSuccess("登陆成功");
 	          }else{  
 	              token.clear();
 	              return ajaxDoneError("验证未通过"); 
 	          }  
     }
+	
     @RequestMapping(value="/core")
     public Object core() {
     	Subject currentUser = SecurityUtils.getSubject();

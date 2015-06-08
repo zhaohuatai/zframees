@@ -19,7 +19,7 @@
 	<context:component-scan base-package=
 	"com.zht.common,
 	com.zht.project,
-	com.zht.demo" 
+	cn.edu.ujn.natural" 
 		use-default-filters="false">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
@@ -215,11 +215,6 @@
     <mvc:interceptor>
         <mvc:mapping path="/**"/>
         <bean class="org.zht.framework.interceptors.TokenInterceptor"/>
-    </mvc:interceptor>
-    
-    <mvc:interceptor>
-        <mvc:mapping path="/**"/>
-        <bean class="com.zht.common.dauth.intercetors.AppRequestInterceptor"/>
     </mvc:interceptor>
     
     <!-- 拦截器配 置

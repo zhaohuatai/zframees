@@ -47,6 +47,9 @@ var ZHTPUBUtil ={
 		form2Json:function (formArrayData) {
 		    //var arr = $("#" + id).serializeArray();
 			var arr=formArrayData;
+			if(arr.length<1){
+				return JSON.parse("{}");
+			}
 		    var jsonStr = "";
 		    jsonStr += '{';
 		    for (var i = 0; i < arr.length; i++) {
@@ -60,6 +63,9 @@ var ZHTPUBUtil ={
 		form2Jsonssss:function (formId) {
 		    var arr = $("#" + id).serializeArray();
 		    var jsonStr = "";
+		    if(arr.length<1){
+				return JSON.parse(jsonStr);
+			}
 		    jsonStr += '{';
 		    for (var i = 0; i < arr.length; i++) {
 		        jsonStr += '"' + arr[i].name + '":"' + arr[i].value + '",';
@@ -106,4 +112,30 @@ var ZHTPUBUtil ={
 				return {};
 			}
 		},
+		formatDate:function(value){
+			if(value&&value.length>=10){
+				return value.substr(0,10);
+			}
+			
+			//alert("value "+value);
+			
+			// var dd=new Date("1998","11","29","10","11","44");
+			if(value){
+				var date = new Date(value);
+				if(date){
+					alert("date "+date);
+				}
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				//alert(date+" "+month+" "+ day);
+				if(month<10){
+					month = '0'+ month;
+				}
+				if(day<10){
+					day = '0'+ day;
+				}
+				return date.getFullYear() + '-' + month + '-'+ day;
+			}
+			return '';
+		}
 };

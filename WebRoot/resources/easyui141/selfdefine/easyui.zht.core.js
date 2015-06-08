@@ -76,7 +76,7 @@ var ZHT = {
 		} else {
 			if(json.message && alertMsg){
 				alertMsg.correct(json.message);
-				editDialog.close(2000);
+				editDialog.close(1000);//0604 17:48
 			}
 		};
 	},

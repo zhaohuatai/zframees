@@ -42,7 +42,14 @@ public class ZBeanUtil extends org.springframework.beans.BeanUtils{
 			return false;
 		}
 	}
+
 	
+	 public static void main(String[] sd){
+			Long[] ssd=new Long[]{1L,2L,3L};
+//			ssd=(Long[]) removeDuplicateWithOrder(ssd);
+//			System.out.println(isEmptyValue(ssd));
+//		 System.out.println(parseToSplitStr(ssd));
+		 }
 	public static Long parseLong(Object value){
 		try{
 			return Long.valueOf(""+value);
@@ -159,11 +166,7 @@ public class ZBeanUtil extends org.springframework.beans.BeanUtils{
         return newList;
     }
 	
-	 public static void main(String[] sd){
-			Long[] ssd=new Long[]{1L,1L,2L,3L};
-			ssd=(Long[]) removeDuplicateWithOrder(ssd);
-			System.out.println(isEmptyValue(ssd));
-		 }
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object[] removeDuplicateWithOrder(Object[] array) {
 		if(array==null||array.length==0){

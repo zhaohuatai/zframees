@@ -15,10 +15,11 @@ public class AuthLinkButton extends SimpleTagSupport{
 	private String onclick;
 	private String plain;
 	private String text;
+	
 	private String authStr;
 	private String roleCode;
 	private String permitCode;
-	
+	private Boolean hiddenIfNoPerm;
 	
 	@Override
 	public void doTag() throws JspException, IOException {
@@ -62,6 +63,9 @@ public class AuthLinkButton extends SimpleTagSupport{
 //			}
 			
 			if(!hasPermission){
+				if(hiddenIfNoPerm!=null&&hiddenIfNoPerm){
+					return "";
+				}
 				strBuffer.append("  data-options=\"disabled:true\" ");
 				strBuffer.append(">");
 				strBuffer.append("<font color=\"red\">["+text+"]</font>");
@@ -129,6 +133,12 @@ public class AuthLinkButton extends SimpleTagSupport{
 		}
 		public void setPermitCode(String permitCode) {
 			this.permitCode = permitCode;
+		}
+		public Boolean getHiddenIfNoPerm() {
+			return hiddenIfNoPerm;
+		}
+		public void setHiddenIfNoPerm(Boolean hiddenIfNoPerm) {
+			this.hiddenIfNoPerm = hiddenIfNoPerm;
 		}
 		
 		

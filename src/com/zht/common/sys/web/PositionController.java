@@ -1,6 +1,10 @@
 package com.zht.common.sys.web;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.validation.Valid;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,7 @@ import org.zht.framework.data.ParamItem;
 import org.zht.framework.data.DataSet;
 import org.zht.framework.data.RowMap;
 import org.zht.framework.data.Querylogic;
+
 import com.zht.common.sys.model.Position;
 import com.zht.common.sys.service.IPositionService;
 @Controller 
@@ -36,21 +41,29 @@ public class PositionController extends BaseController {
 	private static final  RowMap rowMap=new RowMap( 
 	"name","name",
 	"modifyTime","modifyTime",
-	"creater","creater",
+	"creator","creator",
 	"remark","remark",
 	"department","department.name",
+	"rbacRole","rbacRole.name",
 	"id","id");
 /*--------------------------------------------------------------------------------*/  		
 	@RequiresPermissions("Position:loadPositionGridView")
     @RequestMapping(value="/loadPositionGridView")
     @ResponseBody 
     public Object loadPositionGridView(@ModelAttribute("paramObject") ParamObject paramObject){
-    
-		paramObject.addParamItem("key_name", new ParamItem("name","%??%",paramObject.getReqParam("name"),"LIKE"));
-		paramObject.addParamItem("key_department", new ParamItem("department",paramObject.getReqParam("department"),"="));
-		
+		paramObject.addParamItem("name", new ParamItem("name", "%??%", paramObject.getReqParam("name"), Querylogic.L_like));
 	    DataSet grid= positionService.$base_loadDataSetFromOneEntity(paramObject, rowMap);
 	    return FastjsonUtil.convert(grid);
+    }
+	
+	
+	@SuppressWarnings("rawtypes")
+//	@RequiresPermissions("UserDetail:loadUserDetailCombox")
+    @RequestMapping(value="/loadPositionCombox")
+    @ResponseBody 
+    public Object loadPositionCombox(){
+		List<Map> list=positionService.loadPositionCombox();
+	    return FastjsonUtil.convert(list);
     }
 /*--------------------------------Detail------------------------------------------------*/  
 	@RequiresPermissions("Position:enterPositionDetail")
@@ -59,7 +72,25 @@ public class PositionController extends BaseController {
 		Position position=positionService.$base_find(id);
 		setDataAttribute(model,position,"position");
 		return jspPrefix+"positionDetail";
-	}	
+	}
+	
+	@RequiresPermissions("Position:loadPositionCombobox")
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/loadPositionCombobox")
+	@ResponseBody
+	public Object loadPositionCombobox() throws Exception {
+//		java.util.List<java.util.Map> list= positionService.loadAvilablePositionComboxByUserId();
+		List<Map> list= positionService.loadPositionCombox();
+		return FastjsonUtil.convert(list);
+	}
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/loadAvilablePositionComboboxByUserId")
+	@ResponseBody
+	public Object loadAvilablePositionComboboxByUserId(Long userId) throws Exception {
+		List<Map> list= positionService.loadAvilablePositionComboxByUserId(userId);
+		return FastjsonUtil.convert(list);
+	}
+	
 /*-------------------------Add-------------------------------------------------------*/   	
 	@RequiresPermissions("Position:enterAddPosition")
 	@RequestMapping(value="/enterAddPosition")
@@ -88,7 +119,7 @@ public class PositionController extends BaseController {
     @RequestMapping(value="/updatePosition") 
     public Object updatePosition(@Valid @ModelAttribute("position")Position position,BindingResult bindingResult) throws Exception{
     	processValidateResult(bindingResult);
-    	positionService.$base_update(position);
+    	positionService.$base_update(position,false);
     	return ajaxDoneSuccess("数据修改成功 ");
     }
 /*------------------------------simpleDelete--------------------------------------------------*/    
@@ -108,12 +139,4 @@ public class PositionController extends BaseController {
     }
     
 /*-------------------------------------------------------------------------------------------------------*/
-	@RequiresPermissions("Position:loadPositionCombotree")
-	@SuppressWarnings("rawtypes")
-	@RequestMapping(value = "/loadPositionCombotree")
-	@ResponseBody
-	public Object loadPositionCombotree() throws Exception {
-		java.util.List<java.util.Map> list= positionService.$base_loadCombotree();
-		return FastjsonUtil.convert(list);
-	}
 }

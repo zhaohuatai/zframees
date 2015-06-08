@@ -20,6 +20,7 @@ import com.zht.common.shiro.info.ShiroSessionUser;
  */
 public class ShiroUserUtil {
 	public static final String SHIROSESSIONUSER="_SHIROSESSIONUSER_";
+	public static final String ANONYMOUS="anonymous";
 	
 	
 	public static String  getUserName(){

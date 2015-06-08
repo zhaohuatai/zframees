@@ -1,6 +1,7 @@
 package com.zht.common.sys.web;
 
 import javax.validation.Valid;
+
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.zht.framework.data.ParamItem;
 import org.zht.framework.data.DataSet;
 import org.zht.framework.data.RowMap;
 import org.zht.framework.data.Querylogic;
+
 import com.zht.common.sys.model.Department;
 import com.zht.common.sys.service.IDepartmentService;
 @Controller 
@@ -109,12 +111,13 @@ public class DepartmentController extends BaseController {
     }
     
 /*-------------------------------------------------------------------------------------------------------*/
-	@RequiresPermissions("Department:loadDepartmentCombotree")
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/loadDepartmentCombotree")
 	@ResponseBody
 	public Object loadDepartmentCombotree() throws Exception {
-		java.util.List<java.util.Map> list= departmentService.$base_loadCombotree();
+		java.util.List<java.util.Map> list= departmentService.loadDepartmentCombotree();
 		return FastjsonUtil.convert(list);
 	}
+	
+	
 }

@@ -127,6 +127,29 @@ public class RowMap extends ConcurrentHashMap<String,String>{
 		return str;
 	}
 	
+	public String getMapStr(String alias){
+		if(this.size()==0){
+			return null;
+		}
+		String str="";
+		for (Map.Entry<String, String> entry : this.entrySet()) {
+			String key=entry.getKey();
+			String value=entry.getValue();
+			if(key!=null&&key.length()>0&&value!=null&&value.length()>0){
+				if(value.contains(".")){
+					str+=" "+ value +" as " +key+", ";
+				}else{
+					str+=" "+ alias+"."+value +" as " +key+", ";
+				}
+				
+			}
+		}
+		if(str.length()>0){
+			str=str.substring(0,str.lastIndexOf(","));
+		}
+		return str;
+	}
+	
 	public  String getLeftJoinStr(){
 		List<String> leftJounList=new ArrayList<String>();
 		if(this.size()==0){
@@ -141,14 +164,14 @@ public class RowMap extends ConcurrentHashMap<String,String>{
 				if(value.contains(".")){
 					String lj=ZStrUtil.substringBefore(value, ".");
 					if(!leftJounList.contains(lj)){
-						str+=leftJoin+" "+ RowMap.queryAsAlias+"."+lj+" as " +lj+",";
+						str+=leftJoin+" "+ RowMap.queryAsAlias+"."+lj+" as " +lj+" ";
 						leftJounList.add(lj);
 					}
 					
 				}
 			}
 		}
-		if(str.length()>0){
+		if(str.length()>0&&str.contains(",")){
 			str=str.substring(0,str.lastIndexOf(","));
 		}
 		return str;

@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zht.framework.data.DataSet;
@@ -34,8 +33,6 @@ import com.zht.common.rabc.model.RbacUser;
 import com.zht.common.rabc.service.IRbacRoleService;
 import com.zht.common.rabc.service.IRbacUserService;
 import com.zht.common.shiro.util.ShiroSecurityHelper;
-import com.zht.common.sys.model.Department;
-import com.zht.common.sys.model.DepartmentUser;
 @Service
 @Transactional(rollbackFor=Exception.class)
 public class RbacUserServiceImpl  extends BaseServiceImpl<RbacUser>implements IRbacUserService{
@@ -78,16 +75,7 @@ public class RbacUserServiceImpl  extends BaseServiceImpl<RbacUser>implements IR
 		List<Long> userIdList=(List<Long>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("groupId", groupId));
 		return userIdList;
 	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Long> findUserIdsByDepartmentId(Long departmentId) {
-		if(departmentId==null){
-			return null;
-		}
-		String hql=" select gu.rbacUser.id from SysDepartmentUser  du where du.sysDepartment.id=:departmentId ";
-		List<Long> userIdList=(List<Long>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("departmentId", departmentId));
-		return userIdList;
-	}
+
 	
 //----------------------GROUP@S-----------------------------------------------------------------------
 	 	
@@ -140,54 +128,7 @@ public class RbacUserServiceImpl  extends BaseServiceImpl<RbacUser>implements IR
 		return grid;
 	}
 //----------------------Department@S-----------------------------------------------------------------------	
-	@Override
-	public DataSet loadUserDataSetIsInDepartment(ParamObject paramObject,RowMap rowMap, Long departmentId, Boolean isIn) {
-		if(departmentId==null){
-			return null;
-		}
-		String extroConditon="";
-    	if(isIn!=null&&isIn){
-    		extroConditon=" and id in ( select gu.rbacUser.id from DepartmentUser gu where gu.department.id="+departmentId+") ";
-    	}else if(isIn!=null&&!isIn){
-    		extroConditon=" and id not in ( select gu.rbacUser.id  from DepartmentUser gu where gu.department.id="+departmentId+" ) ";
-    	}
-    	DataSet grid= baseDaoImpl.loadDataSetFromOneEntity(RbacUser.class,paramObject,rowMap, extroConditon);
-		return grid;
-	}
-	@Override
-	public void removeUserFromDepartment(Long[] userIds, Long departmentId) {
-		if(userIds==null||userIds.length==0||departmentId==null){
-			throw new ServiceLogicalException("请选择数据 ");
-		}
-		String hql=" delete from DepartmentUser where rbacUser.id in(:userIds) and department.id=:departmentId";
-		baseDaoImpl.executeUpdate(hql, new ParamObject(POType.H_NO_NC).addAllowNull("departmentId", departmentId).addAllowNull("userIds", userIds));
 
-		
-	}
-	@SuppressWarnings("unchecked")
-	@Override
-	public void addUserToDepartment(Long[] userIds, Long departmentId) {
-		if(userIds==null||departmentId==null||userIds.length==0){
-			throw new ServiceLogicalException("请选择数据");
-		}
-		userIds= (Long[]) ZBeanUtil.removeDuplicateWithOrder(userIds);
-		
-		String hql="select gu.rbacUser.id from DepartmentUser gu where gu.department.id=:departmentId";
-		List<Long> userIdsInGU=(List<Long>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("departmentId", departmentId));
-		if(userIdsInGU==null){
-			userIdsInGU=new ArrayList<Long>();
-		}
-		List<DepartmentUser> guListToBeAdd=new ArrayList<DepartmentUser>();
-			for(Long userId:userIds){
-				if(!userIdsInGU.contains(userId)){
-					guListToBeAdd.add(new DepartmentUser(new RbacUser(userId),new Department(departmentId)));
-				}
-			}
-		if(guListToBeAdd.size()>0){
-			baseDaoImpl.saveOrUpdate(guListToBeAdd);
-		}
-		
-	}
 	@SuppressWarnings("unchecked")
 	@Override
 	public Boolean checkDefaultRole(String username) {

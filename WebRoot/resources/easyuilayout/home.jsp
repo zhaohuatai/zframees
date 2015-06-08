@@ -56,12 +56,16 @@
 <a class="easyui-linkbutton" href="javascript:;" onclick="selectById(3)"><span>selectById</span></a><br /><br />
 
 <a class="easyui-linkbutton" href="javascript:;" onclick="returnBackDialog(3)"><span>selectById</span></a><br /><br />
-	
+
+<zht:dataDic name="sdad"  required="true" hasEmptyChoice="true" dataType="^001^00" selectedValue="^001^01" multiple="true"  style="width:300px;" />
+<br /><br />
+
+
 
 		</div>
 		<div title="About" data-options="selected:false" style="padding:10px;">
 			<h3 style="color:#0099FF;">Accordion for jQuery</h3>
-			<p>Accordion is a part of easyui framework for jQuery. It lets you define your accordion component on web page more easily.</p>
+				
 		</div>
 		<div title="Title1" style="padding:10px">
 			<p>Content1</p>

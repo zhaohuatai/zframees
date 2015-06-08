@@ -6,6 +6,8 @@
 package com.zht.common.rabc.web;
 
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -161,4 +163,13 @@ public class RbacRoleController extends BaseController{
     	rbacPermissionService.removePermsFromRole(permissionsIds, roleId);
 		return ajaxDoneSuccess("数据修改成功 ");
     }
+	
+    @ResponseBody 
+    @RequestMapping(value="/loadRoleFoSelect")
+    public Object loadRoleFoSelect(){
+		List<?> data =rbacRoleService.findRoleComoboxData();
+    	return FastjsonUtil.convert(data);
+    }
+	
+	
 }

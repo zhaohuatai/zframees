@@ -5,6 +5,8 @@
  */
 package org.zht.framework.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,8 +57,55 @@ public class ZStrUtil extends org.apache.commons.lang3.StringUtils{
 		return  null==trimToNull(str);
 	}
 	//------------------------------------------------------------
-
+	public static String parseToSplitStr(List<?> value) {
+		if(value==null){
+			return null;
+		}
+		if(value.size()==0){
+			return "";
+		}
+		List<Object> target=new ArrayList<Object>();
+		for(Object obj:value){
+			if(obj!=null){
+				target.add(obj);
+			}
+		}
+		String str=ZStrUtil.join(target,",");
+		return str;
+	}
 	
+	public static String parseToSplitStr(Object[] value) {
+		if(value==null){
+			return null;
+		}
+		if(value.length==0){
+			return "";
+		}
+		List<Object> target=new ArrayList<Object>();
+		for(Object obj:value){
+			if(obj!=null){
+				target.add(obj);
+			}
+		}
+		String str=ZStrUtil.join(target,",");
+		return str;
+	}
+	//1,2,3
+	public static Long[] parseToLongArray(String value) {
+		String[] objectArray = value.split(",");
+		if (objectArray != null && objectArray.length > 0) {
+			Long[] longArray = new Long[objectArray.length];
+			for (int i = 0; i < objectArray.length; i++) {
+				longArray[i] = Long.parseLong(objectArray[i]);
+			}
+			return longArray;
+		}
+		return null;
+	}
+	public static void main(String[] sd){
+		Long[] ssd=new Long[]{1L,null,3L};
+	 System.out.println(parseToSplitStr(ssd));
+	}
 	/**
 	 * 判断字符串是否符合   正则表达式
 	 * @param input
@@ -156,8 +205,6 @@ public class ZStrUtil extends org.apache.commons.lang3.StringUtils{
 		}
 		return res;
 	}
-	public static void main(String[] sd){
-		System.out.println(convertToBool("true",false));
-	}
+	
 
 }

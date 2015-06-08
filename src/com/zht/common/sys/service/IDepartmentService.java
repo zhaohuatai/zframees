@@ -18,4 +18,8 @@ public interface IDepartmentService extends IBaseService<Department>{
 	 public void deleteDepartment(Long id);
 	 
 	 public List<Long> findDepartmentIdsByUserId(Long userId);
+	 
+	 public List<String> findDepartmentNamesByUserId(Long userId);
+	 
+	 public List<Long> findChildDeptIdsBySelefId(Long deptId);
 }

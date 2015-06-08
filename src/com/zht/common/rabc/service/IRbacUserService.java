@@ -17,8 +17,6 @@ import com.zht.common.rabc.model.RbacUser;
 
 public interface IRbacUserService extends IBaseService<RbacUser>{
  
- 
- 
  public RbacUser findUserByName(String username) ;
 //---------------------------------------------------------------------------------------------
  public Boolean checkDefaultRole(String username) ;
@@ -29,10 +27,6 @@ public interface IRbacUserService extends IBaseService<RbacUser>{
  public void addUserToGroup(Long[] userIds,Long groupId);
  public List<Long> findUserIdsByGroupId(Long groupid);
  //-------------------------------Department@S---------------------------------------------------------------------------
- public DataSet loadUserDataSetIsInDepartment(ParamObject paramObject,RowMap rowMap,Long departmentId,Boolean isIn);
- public void removeUserFromDepartment(Long[] userIds,Long departmentId);
- public void addUserToDepartment(Long[] userIds,Long departmentId);
- public List<Long> findUserIdsByDepartmentId(Long departmentId);
  
  public void kickOutUser(Long userId);
  

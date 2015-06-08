@@ -15,14 +15,14 @@ function loadAllMenus(ajaxMenuUrl){
 				 var menulist ="<div style=\"padding:2px 2px;\" >";
 				 if(item.linkbuttonViewList &&item.linkbuttonViewList.length>0){
 					 $.each(item.linkbuttonViewList,function(ci,citem){
-						 var menuTitle=citem.display;
+						    var menuTitle=citem.display;
 							var effort=citem.display+"||"+citem.iconCls+"||"+citem.url;
 							menulist+=""+ 
 							"<a href=\"javascript:void(0);\" "+
 							"style=\"width:100%; \" "+
 							"class=\"easyui-linkbutton\" "+
 							"data-options=\"plain:false,iconCls:'"+'icon-color'+"' \" "+
-							"onclick=\"addTab('"+effort+"');\">"+menuTitle+
+							"onclick=\"addTab('"+effort+"');\">"+constructStr(menuTitle)+
 							"</a><br/>";
 						});
 				 }
@@ -39,7 +39,19 @@ function loadAllMenus(ajaxMenuUrl){
 	 }); 
 	
 }
-
+function constructStr( str){
+//	str="&nbsp"+str;
+	var lll=str.length ;
+	if(lll<8){
+		for(var i=lll ;i<8;i++){
+			str+="　 ";
+//			str+="　 ";
+		}
+		str+="&nbsp";
+	}
+	//alert(str+"|");
+	return str;
+}
 function logout(b) {
 	alertMsg.confirm("确认退出吗?", {
 		cancelCall : function() {alertMsg.close();},

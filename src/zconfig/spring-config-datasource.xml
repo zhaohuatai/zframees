@@ -30,9 +30,7 @@
 		<property name="targetDataSources">
 			<map key-type="java.lang.String">
 				<entry key="dataSourceDruid" value-ref="dataSourceDruid" />
-				<entry key="c3p0dataSource1" value-ref="c3p0dataSource1" />
-				<entry key="c3p0dataSource2" value-ref="c3p0dataSource2" />
-				<entry key="c3p0dataSource3" value-ref="c3p0dataSource3" />
+				<entry key="c3p0dataSource" value-ref="c3p0dataSource" />
 			</map>
 		</property>
 		<property name="defaultTargetDataSource" ref="dataSourceDruid" />
@@ -44,7 +42,8 @@
 		<property name="packagesToScan" value="
 			com.zht.project.*.*,
 			com.zht.common.*.*,
-			com.zht.demo.*.*" />
+			cn.edu.ujn.natural.*.*,
+			cn.edu.ujn.natural.*" />
 		<property name="hibernateProperties">
 			<props>
 				  <prop key="hibernate.dialect">${hibernate.dialect}</prop>
@@ -96,7 +95,7 @@
         <property name="url" value="${connection.url}"/>
         <property name="username" value="${connection.username}"/>
        <!-- java -cp druid-1.0.9.jar com.alibaba.druid.filter.config.ConfigTools xxxxxx  -->
-        <property name="password" value="bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA=="/>
+        <property name="password" value="${connection.password}"/>
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="${druid.initialSize}"/>
         <property name="minIdle" value="${druid.minIdle}"/>
@@ -121,44 +120,14 @@
 
         <!-- 配置监控统计拦截的filters,,关闭wall 防火墙，为了方便拼接sql -->
         <property name="filters" value="${druid.filters}" />
-        <property name="connectionProperties" value="config.decrypt=true" />
+       <!--   <property name="connectionProperties" value="config.decrypt=true" />-->
+       <property name="connectionProperties" value="config.decrypt=false" />
+       
 	</bean>
 	
 
 	<!-- 数据源,支持多数据源 -->
-	<bean id="c3p0dataSource1" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${connection.driver_class}" />
-		<property name="jdbcUrl" value="${connection.url}" />
-		<property name="user" value="${connection.url}" />
-		<property name="password" value="${connection.password}" />
-		<property name="initialPoolSize">
-			<value>10</value>
-		</property>
-		<property name="minPoolSize" value="5" />
-		<property name="maxPoolSize" value="30" />
-		<property name="acquireIncrement" value="5" />
-		<property name="maxIdleTime" value="10" />
-		<property name="maxStatements" value="0" />
-	</bean>
- 
-	<bean id="c3p0dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${connection.driver_class}" />
-		<property name="jdbcUrl" value="${connection.url}" />
-		<property name="user" value="${connection.url}" />
-		<property name="password" value="${connection.password}" />
-		<property name="initialPoolSize">
-			<value>10</value>
-		</property>
-		<property name="minPoolSize" value="5" />
-		<property name="maxPoolSize" value="30" />
-		<property name="acquireIncrement" value="5" />
-		<property name="maxIdleTime" value="10" />
-		<property name="maxStatements" value="0" />
-	</bean>
-
-	<bean id="c3p0dataSource3" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="c3p0dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="${connection.driver_class}" />
 		<property name="jdbcUrl" value="${connection.url}" />

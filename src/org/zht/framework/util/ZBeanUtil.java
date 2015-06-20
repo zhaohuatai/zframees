@@ -45,7 +45,7 @@ public class ZBeanUtil extends org.springframework.beans.BeanUtils{
 
 	
 	 public static void main(String[] sd){
-			Long[] ssd=new Long[]{1L,2L,3L};
+//			Long[] ssd=new Long[]{1L,2L,3L};
 //			ssd=(Long[]) removeDuplicateWithOrder(ssd);
 //			System.out.println(isEmptyValue(ssd));
 //		 System.out.println(parseToSplitStr(ssd));

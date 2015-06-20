@@ -120,20 +120,20 @@ public class RbacPermissionServiceImpl extends BaseServiceImpl<RbacPermission> i
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> findAllPermsUserHaveAndInDefaultRoleInPatternA(String userName) {
+	public List<String> findAllPermsUserHaveInDefaultRole(String userName) {
 		if(userName==null){
 			return null;
 		}
-		//defaultRbacRole
-		String hqlFromDefaultRole=" select rp.rbacPermission.code from RbacRolePermission rp where rp.rbacRole.id in (select u.defaultRbacRole.id from RbacUser u where u.userName =:userName) ";
-		
-//		String hqlFromRole=" select p.code from RbacPermission p join p.rbacRoles r where r.id = (select u.defaultRbacRole.id from RbacUser u where u.userName =:userName)";
+		String hqlFromDefaultRole=" select rp.rbacPermission.code from RbacRolePermission rp where "
+				+ " rp.rbacRole.id in (select u.defaultRbacRole.id from RbacUser u where u.userName =:userName) ";
 		List<String> listFromDefaultRole=(List<String>) rbacPermissionDao.findJustList(hqlFromDefaultRole, new ParamObject(POType.H_NO_NC).addParam("userName", userName));
 		
-		String hqlFormUP=" select up.rbacPermission.code from RbacUserPermission up  where up.rbacUser.userName =:userName)";
+		String hqlFormUP=" select up.rbacPermission.code from RbacUserPermission up  where"
+				+ " up.rbacUser.userName =:userName)";
 		List<String> listFormUP=(List<String>) rbacPermissionDao.findJustList(hqlFormUP, new ParamObject(POType.H_NO_NC).addParam("userName", userName));
 		
-		String hql=" select upr.rbacPermission.code from RbacUserPermissionReject upr  where upr.rbacUser.userName =:userName)";
+		String hql=" select upr.rbacPermission.code from RbacUserPermissionReject upr"
+				+ "  where upr.rbacUser.userName =:userName)";
 		List<String> listFromUPR=(List<String>) rbacPermissionDao.findJustList(hql, new ParamObject(POType.H_NO_NC).addParam("userName", userName));
 		
 		List<String> codeList=new ArrayList<String>();
@@ -152,58 +152,25 @@ public class RbacPermissionServiceImpl extends BaseServiceImpl<RbacPermission> i
 		
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<String> findAllPermsUserHaveAndInDefaultRoleInPatternB(String userName) {
-		if(userName==null){
-			return null;
-		}
-//		String sql=" SELECT  per.code from rbac_permission per,rbac_role_permission rper " 
-//				+ " where  rper.permission_id=per.id "
-//				+ " and rper.role_id in ( "
-//				+ " select sp.rbac_role_id as roleId from sys_position sp "
-//				+ " where sp.id in (select u.defaultPosition_id as pid from rbac_user u where u.userName =:userName ) "
-//				+ " ) ";
-		String hqlFromDefaultPosition=""
-				+ " select rp.rbacPermission.code from RbacRolePermission rp "
-				+ " where rp.rbacRole.id in ( "
-				+ " select u.defaultPosition.rbacRole.id from RbacUser u where u.userName =:userName) ";
-		
-		List<String> listFromDefaultPosition=(List<String>) rbacPermissionDao.findJustList(hqlFromDefaultPosition,
-				new ParamObject(POType.H_NO_NC).addParam("userName", userName));
-		
-		String hqlFormUP=" select up.rbacPermission.code from RbacUserPermission up  where up.rbacUser.userName =:userName)";
-		List<String> listFormUP=(List<String>) rbacPermissionDao.findJustList(hqlFormUP, new ParamObject(POType.H_NO_NC).addParam("userName", userName));
-		
-		String hql=" select upr.rbacPermission.code from RbacUserPermissionReject upr  where upr.rbacUser.userName =:userName)";
-		List<String> listFromUPR=(List<String>) rbacPermissionDao.findJustList(hql, new ParamObject(POType.H_NO_NC).addParam("userName", userName));
-		
-		List<String> codeList=new ArrayList<String>();
-		
-		if(listFromDefaultPosition!=null&&listFromDefaultPosition.size()>0){
-			codeList.addAll(listFromDefaultPosition);
-		}
-		if(listFormUP!=null&&listFormUP.size()>0){
-			codeList.addAll(listFormUP);
-		}
-		codeList=(List<String>) ZBeanUtil.removeDuplicateWithOrder(codeList);
-		if(listFromUPR!=null&&listFromUPR.size()>0){
-			codeList.removeAll(listFromUPR);
-		}
-		return codeList;
-		
-	}
 	@Override
 	public void deletePermission(Long[] ids) {
-		if(ids==null||ids.length==0){
+		if(ZBeanUtil.isEmptyValue(ids)){
 			return;
 		}
-		String hql="delete from RbacRolePermission rp where rp.rbacPermission.id in (:ids)";
-		baseDaoImpl.executeUpdate(hql, new ParamObject(POType.H_NO_C).addAllowNull("ids", ids));
+		String hqlA=" delete from RbacUserPermission up where up.rbacPermission.id in (:ids) ";
+		String hqlB=" delete from RbacUserPermissionReject upr where upr.rbacPermission.id in (:ids) ";
+		String hqlC=" delete from RbacRolePermission rp where rp.rbacPermission.id in (:ids) ";
+		String hqlD=" update RbacMenu m set m.rbacPermission.id=null where m.rbacPermission.id in (:ids) ";
+		
+		baseDaoImpl.executeUpdate(hqlA, new ParamObject(POType.H_NO_C).addAllowNull("ids", ids));
+		baseDaoImpl.executeUpdate(hqlB, new ParamObject(POType.H_NO_C).addAllowNull("ids", ids));
+		baseDaoImpl.executeUpdate(hqlC, new ParamObject(POType.H_NO_C).addAllowNull("ids", ids));
+		baseDaoImpl.executeUpdate(hqlD, new ParamObject(POType.H_NO_C).addAllowNull("ids", ids));
 		baseDaoImpl.deleteByIdsInCase(RbacPermission.class, ids);
 	}
 
 	public DataSet loadPermissionForRoleAssign(ParamObject paramObject,RowMap rowMap) {
+		
 		Long roleId=ZBeanUtil.parseLong(paramObject.getReqParam("roleId"));
 		Boolean isInRole=ZBeanUtil.parseBoolean(paramObject.getReqParam("isInRole")) ;
 		
@@ -228,9 +195,7 @@ public class RbacPermissionServiceImpl extends BaseServiceImpl<RbacPermission> i
 		if(roleId==null||permIds==null||permIds.length==0){
 			throw new ServiceLogicalException("请选择数据");
 		}
-		
 		permIds=(Long[]) ZBeanUtil.removeDuplicateWithOrder(permIds);//去掉重复
-		
 		String hql="select rp.rbacPermission.id from RbacRolePermission rp where rp.rbacRole.id=:roleId";
 		List<Long> permIdsInRP=(List<Long>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("roleId", roleId));
 		if(permIdsInRP==null){
@@ -488,21 +453,11 @@ public class RbacPermissionServiceImpl extends BaseServiceImpl<RbacPermission> i
 			baseDaoImpl.executeUpdate(hql, new ParamObject(POType.H_NO_NC).addAllowNull("userId", userId).addAllowNull("permissionsIds", permissionIds));
 	}
 
-	/**
-	 * jiangjm 20150526 10:20
-	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public List<Map> findAllPermissionList() {
-		String hql = " select p.id as id ,p.code as text @from RbacPermission p order by p.id ";
-
-		DataSet dataSet = baseDaoImpl.loadDataSet(hql, new ParamObject(POType.H_NO_NC));
-		List<Map> mapList = new ArrayList<Map>();
-		for(int i=0;i<dataSet.getRows().size();i++){
-			Map root = dataSet.getRows().get(i);
-			//	RbacMenuUtil.traverse(root, dataSet.getRows());
-			mapList.add(root);
-		}
-	
+	public List<Map> findAllPermissionListForComobox() {
+		String hql = " select new map(p.id as id ,p.code as text) @from RbacPermission p order by p.id ";
+		List<Map> mapList=(List<Map>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC));
 		return mapList;
 	}
 

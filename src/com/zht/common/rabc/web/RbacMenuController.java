@@ -41,14 +41,12 @@ import com.zht.common.rabc.view.AccordtionView;
 public class RbacMenuController extends BaseController{
 	
 	private String jspPrefix="/common/rbac/menu/";
-	
-	
 	@Autowired
     private IRbacMenuService rbacMenuService;
+	
     @RequestMapping(value="/loadMenus")
     @ResponseBody 
     public Object loadMenus(Long moduleId,Long userId,Boolean useModule,Model model){
-//    	List<AccordtionView> rbacMenuList=rbacMenuService.findMenuListByModuleId(moduleId);
     	List<AccordtionView> rbacMenuList=rbacMenuService.loadMenuByUserId(moduleId,userId);
         return FastjsonUtil.convert(rbacMenuList);
     }
@@ -67,10 +65,6 @@ public class RbacMenuController extends BaseController{
 	public Object enterMenuPage() {
 		return jspPrefix + "menuTreeGrid";
 	}
-	// + "g.parentRbacGroup.id as _parentId ,"
-RowMap menuMap=new RowMap(RbacMenu.class)
-	.addColMap("_parentId", "parentRbacMenu.id")
-	.addColMap("url", "rbacPermission.url");
 
 
 	@RequiresPermissions("RbacMenu:loadMenuTreeGrid")
@@ -117,7 +111,7 @@ RowMap menuMap=new RowMap(RbacMenu.class)
     @RequestMapping(value="/deleteMenu")
     @ResponseBody 
     public Object deleteMenu(Long id){
-    	rbacMenuService.deleteRbacMenu(id);
+    	rbacMenuService.$base_delete$Just(id);
 		return ajaxDoneSuccess("数据删除成功 ");
     }
 }

@@ -48,8 +48,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
     	 List<String> roles=new ArrayList<String>();
     	 List<String> perms=new ArrayList<String>();
          String userName = (String) principals.getPrimaryPrincipal();
-         roles=roleService.findRoleCodeUserHaveInPatternA(userName,true);
-         perms=permissionService.findAllPermsUserHaveAndInDefaultRoleInPatternA(userName);	
+         roles=roleService.findRoleCodeUserHave(userName,true);
+         perms=permissionService.findAllPermsUserHaveInDefaultRole(userName);	
         
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         authorizationInfo.addRoles(roles);

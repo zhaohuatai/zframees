@@ -32,23 +32,6 @@ public class DataSet {
 		this.rows = rows;
 		this.footer = footer;
 	}
-//	public Map<String,Object> findUniqueRow(String columnName,Object value){
-//		if(rows!=null&&rows.size()>0){
-//			for(Map<String,Object> map:rows){
-//				Object obj = map.get(columnName);
-//				if(obj!=null&&obj.equals(value)){
-//					return map;
-//				}
-//			}
-//		}
-//		return null;
-//	}
-//	public DataTable getDataTable(){
-//		if(rows!=null&&rows.size()>0){
-//			return new DataTable(rows);
-//		}
-//		return null;
-//	}
 	
 	/**
 	 * 查询只有一条记录的时候

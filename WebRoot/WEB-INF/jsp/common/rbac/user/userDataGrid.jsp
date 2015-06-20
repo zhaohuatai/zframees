@@ -13,12 +13,13 @@
 <script>
 var treegrid;
 $(function(){
+	var h1=$(this).height();
 	//1:50 , 2:87 3:124
 	var loadurl="${ctx}/rbac/user/loadUserGridView";
     treeDrid = $("#userDataGrid").datagrid({
 				title:"",
 				width:'100%',
-				height:$(this).height()-(($("#easyuiqueryform tr").length-1)*37+50),
+				height:(h1-$("#queryFormDiv").height()-$("#toolbarDiv").height()-(3*$("#easyuiqueryform tr").length)),
 				nowrap: true,//设置为true，当数据长度超出列宽时将会自动截取
 				rownumbers: true,
 				fitColumns: false,//滚动条
@@ -73,7 +74,7 @@ $(function(){
 			});
 });
 	
-	function loaddata(reload) {  
+	function loaddata(reload) { 
 	  	var queryParams =$("#userDataGrid").datagrid("options").queryParams;
 		ZHTEASYUtil.genQueryParams(queryParams, $("#searchform").form().serializeArray());
 		$("#userDataGrid").datagrid(reload);
@@ -130,6 +131,8 @@ $(function(){
 			url:url,params:param,onClosed:function(){loaddata('reload');}};
 	editDialog.open(options);
 }
+ 
+
 function kickUser(){
 	 var rows = $("#userDataGrid").datagrid("getSelections");
 	 if(rows.length == 0){
@@ -147,8 +150,11 @@ function kickUser(){
 </script>
 </head>
 <body style="overflow: hidden;">
-  	<div class="easyui-panel" style="margin:1px;padding:0px;width:100%; overflow-x:sroll;overflow-y:hidden; " >
+	<div class="easyui-layout" style="margin:1px;padding:0px;width:100%;" data-options="fit:true,border:false">
+	<div data-options="region:'center'"  title="用户信息"  style="width:80%;overflow-y:hidden;" >
+  	<div id="queryFormDiv" class="easyui-panel" style="margin:1px;padding:0px;width:100%; overflow-x:sroll;overflow-y:hidden; " >
 	<form name="searchform" method="post" action="" id ="searchform">
+	<input type="hidden" name="" id="departmentId" />
        <table class="easyuiqueryform" id="easyuiqueryform">
 			<tr>
 				<td>用户名:</td>
@@ -177,13 +183,10 @@ function kickUser(){
 	
 	<%-- <zht:authButton text="删 除" iconCls="icon-remove"  onclick="deleteTreeNode();"/>--%>
 	
-	<zht:authButton text="分配角色" iconCls="icon-color"  onclick="openRoleAssignmentDialog();"/>
-	<zht:authButton text="分配权限" iconCls="icon-color"  onclick="openPermissionAssignmentDialog();"/>
+	<zht:authButton text="角色分配" iconCls="icon-color"  onclick="openRoleAssignmentDialog();"/>
+	<zht:authButton text="权限分配" iconCls="icon-color"  onclick="openPermissionAssignmentDialog();"/>
+	<%-- <zht:authButton text="用户组分配" iconCls="icon-color"  onclick="openAssignmentDialog();"/>--%>
 	<zht:authButton text="强制退出" iconCls="icon-color"  onclick="kickuser();"/>
-	<%--
-	<zht:authButton text="所属用户组" iconCls="icon-color"  onclick="openAssignmentDialog();"/>
-	<zht:authButton text="所属部门" iconCls="icon-color"  onclick="openAssignmentDialog();"/>
-	 --%>
 </div>	
 </body>
 </html>

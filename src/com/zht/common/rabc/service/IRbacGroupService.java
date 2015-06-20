@@ -39,11 +39,6 @@ public interface IRbacGroupService extends IBaseService<RbacGroup>{
 	  */
 	 public List<Map> loadGroupCombotree() ;
 	 
-	 /**
-	  * 删除
-	  * @param id： grouoId
-	  */
-	 public void deleteRbacGroup(Long id);
 	 
 	 /**
 	  * 从 GroupByUser表中根据userId 加载groupId 集合

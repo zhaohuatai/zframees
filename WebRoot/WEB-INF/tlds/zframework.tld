@@ -497,7 +497,104 @@
 			<type>java.lang.String</type>
 			<description>permitCode</description>
 		</attribute>
+		<attribute>
+			<name>hiddenIfNoPerm</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hiddenIfNoPerm</description>
+		</attribute>
+		
 	</tag>	
 	
 		
+		
+		
+<!-- DataDicSelectTag -->
+
+	<tag>
+		<name>dataDic</name>
+		<tag-class>com.zht.common.tag.easyui.DataDicSelectTag</tag-class>
+		<body-content>empty</body-content>
+	<attribute>
+			<name>id</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>id</description>
+		</attribute>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>name</description>
+		</attribute>
+		<attribute>
+			<name>dataType</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>dataType</description>
+		</attribute>
+		<attribute>
+			<name>style</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>style</description>
+		</attribute>	
+	
+	<attribute>
+			<name>disabled</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>disabled</description>
+		</attribute>
+			<attribute>
+			<name>onclick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>onclick</description>
+		</attribute>
+		<attribute>
+			<name>onchange</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>onchange</description>
+		</attribute>
+	<attribute>
+			<name>hasEmptyChoice</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>hasEmptyChoice</description>
+		</attribute>
+	<attribute>
+			<name>selectedValue</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+			<description>selectedValue</description>
+		</attribute>
+	<attribute>
+			<name>multiple</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>multiple</description>
+		</attribute>
+	<attribute>
+			<name>required</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Boolean</type>
+			<description>required</description>
+		</attribute>		
+	</tag>	
+	
+	
 	</taglib>

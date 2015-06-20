@@ -74,7 +74,7 @@ public class RbacPermissionController extends BaseController{
 	@RequestMapping(value="/loadPermissionList")
     @ResponseBody 
     public Object loadPermission() throws Exception{
-    	List<Map> list=rbacPermissionService.findAllPermissionList();  
+    	List<Map> list=rbacPermissionService.findAllPermissionListForComobox();  
         return FastjsonUtil.convert(list);
     }
 	

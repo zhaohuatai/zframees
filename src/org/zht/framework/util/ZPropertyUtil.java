@@ -2,13 +2,6 @@ package org.zht.framework.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.zht.framework.service.impl.EasyuiTreeUtil;
-
-import com.esotericsoftware.reflectasm.MethodAccess;
-import com.zht.common.rabc.model.RbacRole;
-import com.zht.common.sys.model.Position;
-
 public class ZPropertyUtil {
 	/***
 	* 获得一个类的方法的值
@@ -30,16 +23,16 @@ public class ZPropertyUtil {
 			try {
 				obj = m.invoke(entity);
 			} catch (IllegalArgumentException e) {
-				LogUtil.genErrorLog(EasyuiTreeUtil.class, "getInvokeValue", "IllegalArgumentException:-972855736L", e);
+				LogUtil.genErrorLog(ZPropertyUtil.class, "getInvokeValue", "IllegalArgumentException:-972855736L", e);
 				return -972855736L;
 			} catch (IllegalAccessException e) {
-				LogUtil.genErrorLog(EasyuiTreeUtil.class, "getInvokeValue", "IllegalAccessException:-972855736L", e);
+				LogUtil.genErrorLog(ZPropertyUtil.class, "getInvokeValue", "IllegalAccessException:-972855736L", e);
 				return -972855736L;
 			} catch (InvocationTargetException e) {
-				LogUtil.genErrorLog(EasyuiTreeUtil.class, "getInvokeValue", "InvocationTargetException:-972855736L", e);
+				LogUtil.genErrorLog(ZPropertyUtil.class, "getInvokeValue", "InvocationTargetException:-972855736L", e);
 				return -972855736L;
 			} catch (Exception e) {
-				LogUtil.genErrorLog(EasyuiTreeUtil.class, "getInvokeValue", "Exception:-972855736L", e);
+				LogUtil.genErrorLog(ZPropertyUtil.class, "getInvokeValue", "Exception:-972855736L", e);
 				return -972855736L;
 			}
 		}

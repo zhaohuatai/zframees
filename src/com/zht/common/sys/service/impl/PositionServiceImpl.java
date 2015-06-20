@@ -56,7 +56,7 @@ public class PositionServiceImpl extends BaseServiceImpl<Position> implements IP
 		if (userId == null) {
 			return null;
 		}
-		List<String> roleCodesUserHave=rbacRoleService.findRoleCodeUserHaveInPatternA(userId, true);
+		List<String> roleCodesUserHave=rbacRoleService.findRoleCodeUserHave(userId, true);
 		if(roleCodesUserHave==null||roleCodesUserHave.size()==0){
 			return null;
 		}

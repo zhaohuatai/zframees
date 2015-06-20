@@ -52,8 +52,8 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 		String hql_B="delete from RbacGroupRole where rbacRole.id in (:ids) ";
 		baseDaoImpl.executeUpdate(hql_B, new ParamObject(POType.H_NO_NC).addAllowNull("ids", ids));
 		
-		String hql_C="delete from SysDepartmentRole where rbacRole.id in (:ids) ";
-		baseDaoImpl.executeUpdate(hql_C, new ParamObject(POType.H_NO_NC).addAllowNull("ids", ids));
+//		String hql_C="delete from SysDepartmentRole where rbacRole.id in (:ids) ";
+//		baseDaoImpl.executeUpdate(hql_C, new ParamObject(POType.H_NO_NC).addAllowNull("ids", ids));
 		
 		String hql_D="delete from RbacUserRole where rbacRole.id in (:ids) ";
 		baseDaoImpl.executeUpdate(hql_D, new ParamObject(POType.H_NO_NC).addAllowNull("ids", ids));
@@ -68,7 +68,7 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 //-------------------------------------USER@S----------------------------------------------------------------
 
 	public List<?> findRoleCodeUserHaveForCombox(Long userId,Boolean isEnable){
-		List<String>  roleCodeList=findRoleCodeUserHaveInPatternA(userId,isEnable);
+		List<String>  roleCodeList=findRoleCodeUserHave(userId,isEnable);
 		if(!ZBeanUtil.isEmptyValue(roleCodeList)){
 			String hql=" select new map( r.id as id ,r.name as name ) from RbacRole r where r.code in (:roleCodeList)";
 			List<?> list= baseDaoImpl.findJustList(hql,new ParamObject(POType.H_NO_NC).addAllowNull("roleCodeList", roleCodeList));
@@ -77,23 +77,23 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 		return null;
 	}
 	
-	 public List<String> findRoleCodeUserHaveInPatternA(String userName,Boolean isEnable){
+	 public List<String> findRoleCodeUserHave(String userName,Boolean isEnable){
 		 Long userId=(Long) baseDaoImpl.findIdByUnique(RbacUser.class, "userName", userName);
 		 if(userId==null){
 			 return null;
 		 }
-		 return findRoleCodeUserHaveInPatternA( userId,  isEnable);
+		 return findRoleCodeUserHave( userId,  isEnable);
 	 }
 	 
 		@SuppressWarnings("unchecked")
 		@Override
-		public List<String> findRoleCodeUserHaveInPatternA(Long userId, Boolean isEnable) {
+		public List<String> findRoleCodeUserHave(Long userId, Boolean isEnable) {
 			//A: userRole(+)
 			List<String> fromUserRole=findRoleCodeInUserRoleByUserId(userId,isEnable);
 			//B: userRole(-)
 			List<String> fromUserRoleReject=findRoleCodeInUserRoleRejectByUserId(userId,isEnable);
 			//C: user extends group (+)
-			List<String> fromUserEGroups=findRoleCodeFromUserExtendsGroupsByUserId(userId,isEnable);
+			List<String> fromUserEGroups=findRoleCodeFromUserExtenGroupsByUserId(userId,isEnable);
 			
 			List<String> finalList=new ArrayList<String>();
 			if(fromUserRole!=null){
@@ -108,8 +108,9 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			}
 			return finalList;
 		}
-		 public List<String> findRoleNameUserHaveInPatternA(Long userId,Boolean isEnable){
-			List<String> list= findRoleCodeUserHaveInPatternA(userId,isEnable);
+		 @SuppressWarnings("unchecked")
+		public List<String> findRoleNameUserHave(Long userId,Boolean isEnable){
+			List<String> list= findRoleCodeUserHave(userId,isEnable);
 			if(list==null||list.size()==0){
 				return null;
 			}
@@ -117,48 +118,6 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			List<String> list2=(List<String>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC).addAllowNull("idList", list));
 			return list2;
 		 }
-//		@SuppressWarnings("unchecked")
-//		@Override
-//		public List<String> findRoleCodeUserHaveInPatternB(Long userId,Boolean isEnable) {
-//			// from position + from userRole - from userRoleReject
-//			//1:roleIdFromPosition(+)
-//			List<Long> positionIds=positionService.findPositionIdsByRbacUserId(userId);
-//			List<String> roleIdFromPosition=new ArrayList<String>();
-//			if(!ZBeanUtil.isEmptyValue(positionIds)){
-//				String hql="select p.rbacRole.code from Position p where p.id in (:positionIds) and p.rbacRole.enabled=:isEnable";
-//				 roleIdFromPosition=(List<String>) baseDaoImpl.findJustList(hql, new ParamObject(POType.H_NO_NC)
-//				 					.addAllowNull("positionIds", positionIds).addAllowNull("isEnable", isEnable));
-//			}
-//			
-//			//2: fromUserRole(+)
-//			List<String> fromUserRole=findRoleCodeInUserRoleByUserId(userId,isEnable);
-//			//3: fromUserRoleReject(-)
-//			List<String> fromUserRoleReject=findRoleCodeInUserRoleRejectByUserId(userId,isEnable);
-//		
-//			List<String> finalList=new ArrayList<String>();
-//			
-//			if(roleIdFromPosition!=null&&roleIdFromPosition.size()>0){
-//				finalList.addAll(roleIdFromPosition);
-//			}
-//			
-//			if(fromUserRole!=null&&fromUserRole.size()>0){
-//				finalList.addAll(fromUserRole);
-//			}
-//			finalList=(List<String>) ZBeanUtil.removeDuplicateWithOrder(finalList);
-//			if(fromUserRoleReject!=null&&fromUserRoleReject.size()>0){
-//				finalList.removeAll(fromUserRoleReject);
-//			}
-//			return finalList;
-//		}
-
-//		@Override
-//		public List<String> findRoleCodeUserHaveInPatternB(String userName,Boolean isEnable) {
-//			 Long userId=(Long) baseDaoImpl.findIdByUnique(RbacUser.class, "userName", userName);
-//			 if(userId==null){
-//				 return null;
-//			 }
-//			 return findRoleCodeUserHaveInPatternA( userId,  isEnable);
-//		}
 		
 		
 		@SuppressWarnings("unchecked")
@@ -242,7 +201,7 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 		}
 		
 		@Override
-		public List<String> findRoleCodeFromUserExtendsGroupsByUserId(Long userId,Boolean isEnable) {
+		public List<String> findRoleCodeFromUserExtenGroupsByUserId(Long userId,Boolean isEnable) {
 			if(userId==null){
 				return null;
 			}
@@ -265,7 +224,7 @@ public class RbacRoleServiceImpl extends BaseServiceImpl<RbacRole> implements IR
 			if(userId==null){
 				return null;
 			}
-			 List<String> roleCodeListFromGroups=findRoleCodeFromUserExtendsGroupsByUserId(userId,isEnable);
+			 List<String> roleCodeListFromGroups=findRoleCodeFromUserExtenGroupsByUserId(userId,isEnable);
 			 if(roleCodeListFromGroups==null){
 				 return null;
 			 }

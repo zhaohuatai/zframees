@@ -152,7 +152,7 @@ public class UserDetailServiceImpl extends BaseServiceImpl<UserDetail> implement
 		if (deptIduserHave == null || deptIduserHave.size() == 0) {
 			clearUserPositionByUserId( userId);
 		}
-		List<String> roleCodeUserHave = rbacRoleService.findRoleCodeUserHaveInPatternA(userId, true);
+		List<String> roleCodeUserHave = rbacRoleService.findRoleCodeUserHave(userId, true);
 		if (roleCodeUserHave == null || roleCodeUserHave.size() == 0) {
 			clearUserPositionByUserId(userId);
 		}
@@ -205,7 +205,7 @@ public class UserDetailServiceImpl extends BaseServiceImpl<UserDetail> implement
 		if(deptIduserHave==null||deptIduserHave.size()==0){
 			throw new ServiceLogicalException("该用户没有分配任何部门，请先对该用户分配部门");
 		}
-		List<String> roleCodeUserHave=rbacRoleService.findRoleCodeUserHaveInPatternA(userId, true);
+		List<String> roleCodeUserHave=rbacRoleService.findRoleCodeUserHave(userId, true);
 		if(roleCodeUserHave==null||roleCodeUserHave.size()==0){
 			throw new ServiceLogicalException("该用户没有分配任何角色，请先对该用户分配角色");
 		}

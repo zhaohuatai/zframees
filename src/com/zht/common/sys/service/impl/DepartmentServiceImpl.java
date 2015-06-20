@@ -65,9 +65,6 @@ public class DepartmentServiceImpl extends BaseServiceImpl<Department>
 		return mapList;
 	}
 
-	@Override
-	public void deleteDepartment(Long id) {
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

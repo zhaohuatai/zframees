@@ -113,7 +113,7 @@ public class RbacGroupController extends BaseController{
     @RequestMapping(value="/deleteGroup")
     @ResponseBody 
     public Object deleteGroup(Long id){
-    	rbacGroupService.deleteRbacGroup(id);
+    	rbacGroupService.$base_delete$Just(id);
 		return ajaxDoneSuccess("用户组删除成功 ");
     }
     

@@ -67,8 +67,6 @@ public class RbacGroupServiceImpl extends BaseServiceImpl<RbacGroup> implements 
 	}
 	
 
-	@Override
-	public void deleteRbacGroup(Long id) {}
 
 	@Override
 	public List<Long> findGroupIdsByUserId(Long userId) {

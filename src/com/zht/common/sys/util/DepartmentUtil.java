@@ -18,7 +18,12 @@ import java.util.Map;
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DepartmentUtil {
-	
+	/**
+	 * 查找字部门
+	 * @param dataList
+	 * @param root
+	 * @return
+	 */
 	public static  List findChildList(List dataList,Map root){
 		if(root==null||dataList==null){
 			return null;

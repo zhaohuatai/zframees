@@ -26,38 +26,55 @@ import com.zht.common.rabc.model.RbacPermission;
 public interface IRbacPermissionService extends IBaseService<RbacPermission>{
 	public void scanPacgeToloadPermis(String packagz);
 	
-	
-	
-	//------------------------------------------------------------------------
+	 
+/**
+ *  删除操作 <br/>
+ *  delete from RbacUserPermission up where up.rbacPermission.id in (:ids) "; <br/>
+ *  delete from RbacUserPermissionReject upr where upr.rbacPermission.id in (:ids) "; <br/>
+ *  delete from RbacRolePermission rp where rp.rbacPermission.id in (:ids) "; <br/>
+ *  update RbacMenu m set m.rbacPermission.id=null where m.rbacPermission.id in (:ids) ";<br/>
+ * @param ids
+ */
+public void deletePermission(Long[] ids);	
+
+//--------------------------------Role--Permission----------------------------------------
  /**
-  * defaultRoleHave+RbacUserPermission-RbacUserPermissionReject
+  * 获取用户在当前角色下拥有的permission code集合，包括，当前角色+ UserPermission - UserPermissionReject<br/>
+  * permissionCode集合： DefaultRole + RbacUserPermission - RbacUserPermissionReject
   * 
-  * 模式A： user <----> role{userRole+group-userRoleRject} <----> permission
   * @param userName
   */
- public List<String> findAllPermsUserHaveAndInDefaultRoleInPatternA(String userName);
+ public List<String> findAllPermsUserHaveInDefaultRole(String userName);
+
  
  /**
-  * 模式B： user <----> positon <----> role{position+userRole-userRoleReject[group不再参与,职位即可起到group的作用]} <----> permission
-  * @param userName
+  * 从RbacRolePermission表根据roleId查询permission ID集合
+  * @param roleId
   * @return
   */
- public List<String> findAllPermsUserHaveAndInDefaultRoleInPatternB(String userName);
- 
- /**
-  * 删除
-  * @param ids
-  */
- public void deletePermission(Long[] ids);
- 
- 
  public List<Long> findPermissionIdsByRoleId(Long roleId) ;
  
- //-------------------------------Role--Permission----------------------------------------
+ /**
+  * 调用baseDaoImpl.loadDataSetFromOneEntity ，除了 RbacPermission class对象属性，<br/>
+  * 还包括 Long roleId，Boolean isInRole
+  * @param paramObject ：RbacPermission class对象属， Long roleId，Long roleId
+  * @param rowMap
+  * @return
+  */
  public DataSet loadPermissionForRoleAssign(ParamObject paramObject,RowMap rowMap);
  
+ /**
+  * 向RbacRolePermission表中添加role_id=roleId & permission_id in permissionsIds的记录 
+  * @param permissionsIds
+  * @param roleId
+  */
  public void addPermissionsToRole(Long[] permissionsIds,Long roleId);
  
+ /**
+  * 从RbacRolePermission表中删除role_id=roleId & permission_id in permissionsIds的记录 
+  * @param permissionsIds
+  * @param roleId
+  */
  public void removePermsFromRole(Long[] permissionsIds,Long roleId);
 
  
@@ -71,6 +88,7 @@ public interface IRbacPermissionService extends IBaseService<RbacPermission>{
   */
  public List<Long> findPermissionIdsInUserPermissionByUserId(ParamObject paramObject,Long userId);
  public DataSet findPermissionDataSetInUserPermissionByUserId(ParamObject paramObject,Long userId);
+ 
  
  public List<Long> findPermissionIdsInUserPermissionRejectByUserId(ParamObject paramObject,Long userId);
  public DataSet findPermissionDataSetInUserPermissionRejectByUserId(ParamObject paramObject,Long userId);
@@ -86,6 +104,6 @@ public interface IRbacPermissionService extends IBaseService<RbacPermission>{
  public void  removePermissionsFromUserPermissionReject(Long[] permissionIds,Long userId);
  
 
- //2015 0526 10:18
- public List<Map> findAllPermissionList();
+ @SuppressWarnings("rawtypes")
+public List<Map> findAllPermissionListForComobox();
 }

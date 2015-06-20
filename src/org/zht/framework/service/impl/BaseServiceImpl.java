@@ -221,49 +221,49 @@ public class BaseServiceImpl<M extends PKBaseEntity> implements IBaseService<M>{
 			baseDaoImpl.saveOrUpdate(temp);
 		}
 //---------------------------------------------$base_update------E-----------------------------------------------------	 
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public List<Map> $base_loadCombotree() {
-			if(!this.entityClass.isAnnotationPresent(TreeConstruct.class)){
-				return null;
-			}
-			boolean istreeF=false;
-			String fieldname="";
-			 Field[] fields=this.entityClass.getDeclaredFields();
-			 if(fields==null||fields.length==0){
-				 return null;
-			 }
-			 for(Field f:fields){
-				 if(f.isAnnotationPresent(TreeParentFied.class)){
-					 istreeF=true;
-					 fieldname=f.getName();
-					 break;
-				 }
-			 }
-			 if(!istreeF||fieldname==null||fieldname.length()==0){
-				 return null;
-			 }
-			 
-			List<Long> rootIdList = (List<Long>) 
-					baseDaoImpl.findJustList("select id from "+this.entityClass.getSimpleName()+" g where g."+fieldname+".id is null ",
-							new ParamObject(POType.H_NO_NC));
-			if (rootIdList == null || rootIdList.size() == 0) {
-				throw new ServiceLogicalException("未发现数据根节点，请检查数据 ");
-			}
-			if (rootIdList.size() > 1) {
-				throw new ServiceLogicalException("发现多个根节点数据，请检查数据 ");
-			}
-			String hql = " select g.id as id ,"
-					+ " g."+fieldname+".id as _parentId, "
-					+ " g.name as text "
-					+ " @from "+this.entityClass.getSimpleName()+" g ";
-			DataSet dataSet = baseDaoImpl.loadDataSet(hql, new ParamObject(
-					POType.H_NO_NC));
-			Map root = dataSet.getRows().get(0);
-			EasyuiTreeUtil.traverse(root, dataSet.getRows());
-			List<Map> mapList = new ArrayList<Map>();
-			mapList.add(root);
-			return mapList;
-		}
+//		@SuppressWarnings({ "unchecked", "rawtypes" })
+//		public List<Map> $base_loadCombotree() {
+//			if(!this.entityClass.isAnnotationPresent(TreeConstruct.class)){
+//				return null;
+//			}
+//			boolean istreeF=false;
+//			String fieldname="";
+//			 Field[] fields=this.entityClass.getDeclaredFields();
+//			 if(fields==null||fields.length==0){
+//				 return null;
+//			 }
+//			 for(Field f:fields){
+//				 if(f.isAnnotationPresent(TreeParentFied.class)){
+//					 istreeF=true;
+//					 fieldname=f.getName();
+//					 break;
+//				 }
+//			 }
+//			 if(!istreeF||fieldname==null||fieldname.length()==0){
+//				 return null;
+//			 }
+//			 
+//			List<Long> rootIdList = (List<Long>) 
+//					baseDaoImpl.findJustList("select id from "+this.entityClass.getSimpleName()+" g where g."+fieldname+".id is null ",
+//							new ParamObject(POType.H_NO_NC));
+//			if (rootIdList == null || rootIdList.size() == 0) {
+//				throw new ServiceLogicalException("未发现数据根节点，请检查数据 ");
+//			}
+//			if (rootIdList.size() > 1) {
+//				throw new ServiceLogicalException("发现多个根节点数据，请检查数据 ");
+//			}
+//			String hql = " select g.id as id ,"
+//					+ " g."+fieldname+".id as _parentId, "
+//					+ " g.name as text "
+//					+ " @from "+this.entityClass.getSimpleName()+" g ";
+//			DataSet dataSet = baseDaoImpl.loadDataSet(hql, new ParamObject(
+//					POType.H_NO_NC));
+//			Map root = dataSet.getRows().get(0);
+//			EasyuiTreeUtil.traverse(root, dataSet.getRows());
+//			List<Map> mapList = new ArrayList<Map>();
+//			mapList.add(root);
+//			return mapList;
+//		}
 		
 //----------------------------------------------$base_delete$Just------S---------------------------------------------------------------------	
 		@Override

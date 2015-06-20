@@ -7,8 +7,6 @@ package org.zht.framework.service;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
-
 import org.zht.framework.data.DataSet;
 import org.zht.framework.data.ParamObject;
 import org.zht.framework.data.RowMap;
@@ -49,16 +47,41 @@ public interface IBaseService<M extends PKBaseEntity> {
 	 * @param id
 	 */
 	public void $base_delete$Just(Serializable id);
+	
+	/**
+	 * 批量删除
+	 * @param ids
+	 */
 	public void $base_deleteByIdsInCase$Just(Serializable[] ids);
+	/**
+	 * 删除全部数据
+	 */
 	public void $base_deleteAll();
 	//-----------------------------------
-	
+	/**
+	 * 根据ID查询
+	 * @param id
+	 * @return
+	 */
 	public <M> M  $base_find(Serializable id);
 	
+	/**
+	 * 查询记录总数
+	 * @return
+	 */
 	public Long $base_findTotalCount();
 	
+	/**
+	 * 查询所有Model集合
+	 * @return
+	 */
 	public <M> List<M> $base_findAll();
 	
+	/**
+	 * 根据ids集合查询model集合
+	 * @param ids
+	 * @return
+	 */
 	public <M> List<M> $base_findByIdsInCase(Serializable[] ids);
 	
 	public DataSet $base_loadDataSetFromOneEntity(ParamObject paramObject,RowMap rowMap);
@@ -66,9 +89,10 @@ public interface IBaseService<M extends PKBaseEntity> {
 	public DataSet $base_loadDataSetFromOneEntity(ParamObject paramObject,RowMap rowMap,String extraCondition);
 	
 	public <M> List<M> $base_findListByParamObject(ParamObject paramObject,String extraSQLStr);
+	
 	public Long $base_findCountByParamObject(ParamObject paramObject,String extraSQLStr);
 	
 	
 	
-	public List<Map> $base_loadCombotree();
+//	public List<Map> $base_loadCombotree();
 }

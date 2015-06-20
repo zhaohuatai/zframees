@@ -101,7 +101,7 @@ public class UserDetailController extends BaseController {
     	Long defaultPositionId=userDetail.getDefaultPosition()==null?null:userDetail.getDefaultPosition().getId();
     	setDataAttribute(model,defaultPositionId,"defaltPositonId");
     	
-    	List<String> roleNames=rbacRoleService.findRoleNameUserHaveInPatternA(id,true);
+    	List<String> roleNames=rbacRoleService.findRoleNameUserHave(id,true);
     	List<String> deptNames = departmentService.findDepartmentNamesByUserId(id);
     	setDataAttribute(model,ZStrUtil.join(roleNames==null?"":roleNames),"roleNamesUserHave");
     	setDataAttribute(model,ZStrUtil.join(deptNames==null?"":deptNames),"deptNamesUserHave");

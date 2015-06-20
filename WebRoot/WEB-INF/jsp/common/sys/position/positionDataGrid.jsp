@@ -15,14 +15,14 @@
 	<form name="searchform" method="post" action="" id ="searchform">
 <table class="easyuiqueryform" id="easyuiqueryform">
 	<tr>
-		<th>职位名称:</th>
-	<td><input type="text"  name="webParams[name]"    class="easyui-textbox validatebox"  /></td>
-	<th>所属部门:</th>
-	<td><input type="text"  name="webParams[department.id]"     class="easyui-combotree"  /></td>
-	</tr>	
-	<tr>
-	<td><zht:authButton text="查询" onclick="reload('load');;" iconCls="icon-search" /></td>
+		<th>职位名称</th>
+		<td><input type="text" name="webParams['name']" class="easyui-textbox"   /></td>
 	</tr>
+	
+	<tr>
+	<td><zht:authButton text="查询" id="queryDivButton" onclick="reload('load');;" iconCls="icon-search" /></td>
+	</tr>
+	
 </table>
   	</form>
 </div>
@@ -32,7 +32,9 @@
 <div id="toolbarDiv" class="easyui-toolbar" style="padding:4px;height:auto">
 <zht:authButton text="添 加" onclick="openAddDialog();" iconCls="icon-add" />
 <zht:authButton text="编 辑" onclick="openeditDialog();" iconCls="icon-edit" />
+<%--
 <zht:authButton text="删 除" onclick="doDelete();" iconCls="icon-remove" />
+ --%> 
 </div>
 <!----------------------------------------------------->
 <script>
@@ -42,7 +44,7 @@ $(function(){
    $("#positionDataGrid").datagrid({
 				title:"",
 				width:'100%',
-				height:(h1-(($("#easyuiqueryformTable").height()+$("#queryDivButton").height()))-28 ),
+				height:(h1-(($("#queryFormDiv").height())+($("#toolbarDiv").height()))-(3*$("#easyuiqueryform tr").length)),
 				nowrap: true,//设置为true，当数据长度超出列宽时将会自动截取
 				rownumbers: true,
 				fitColumns: false,//滚动条
@@ -61,11 +63,12 @@ $(function(){
 				toolbar:"#toolbarDiv",
 				columns:[[
 				{field:'id',width:20,checkbox:true},
-					{field:'name',title:'职位名称',width:120,},
+					{field:'name',title:'职位名称',width:100,},
 					{field:'modifyTime',title:'修改时间',width:100,},
-					{field:'creater',title:'创建者',width:100,},
+					{field:'creator',title:'创建人',width:100,},
 					{field:'remark',title:'备注',width:100,},
-					{field:'department',title:'所属部门',width:null,},
+					{field:'department',title:'所属部门',width:100,},
+					{field:'rbacRole',title:'对应角色',width:null,},
 				]], onBeforeLoad:function(){ 
 					//去掉分页后之前页仍选中 选中
 		        	$(this).datagrid("clearSelections");
@@ -82,6 +85,9 @@ function reload(reload) {
 	$("#positionDataGrid").datagrid(reload);
 	$("#positionDataGrid").datagrid("clearSelections");
 }
+
+
+
 function openAddDialog(){
 	var url="${ctx}//common/sys/position/enterAddPosition";
 	var options={title:"添加",width:'600',height:'400', url:url,onClosed:function(){reload('reload');}};
@@ -97,7 +103,7 @@ function openeditDialog(){
 	}
    var url="${ctx}//common/sys/position/enterUpdatePosition";
    var params={id:rows[0].id};
-   var options={title:"编辑",width:600,height:400, url:url,params:params,onClosed:function(){reload('reload');}};
+   var options={title:"编辑",width:800,height:400, url:url,params:params,onClosed:function(){reload('reload');}};
    editDialog.open(options);
 }
 function doDelete() {

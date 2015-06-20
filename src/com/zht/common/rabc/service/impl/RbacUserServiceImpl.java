@@ -44,11 +44,11 @@ public class RbacUserServiceImpl  extends BaseServiceImpl<RbacUser>implements IR
 	private IRbacRoleDao  rbacRoleDao;
 	@Autowired
 	private IRbacPermissionDao  rbacPermissionDao;
-	
 	@Autowired
 	private IRbacUserDao  rbacUserDao;
 	@Autowired
 	private IRbacRoleService  rbacRoleService;
+	
 	@Override
 	public RbacUser findUserByName(String username) {
 		if(username==null){
@@ -142,7 +142,7 @@ public class RbacUserServiceImpl  extends BaseServiceImpl<RbacUser>implements IR
 			throw new ServiceLogicalException("当前默认角色未找到，或者处于禁用状态");
 		}
 		
-		List<String> list = rbacRoleService.findRoleCodeUserHaveInPatternA(username, true);
+		List<String> list = rbacRoleService.findRoleCodeUserHave(username, true);
 		if(list==null||list.size()==0){
 			return false;
 		}

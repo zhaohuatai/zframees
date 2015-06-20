@@ -31,7 +31,7 @@ $(function(){
 				]],
 				toolbar:"#toolbarDiv",
 				columns:[[
-					{field:'display',title:'菜单名称',width:160},
+					{field:'display',title:'菜单名称',width:260},
 					{field:'iconCls',title:'图标',width:100,},
 					{field:'type',title:'类型',width:60,formatter:function(value,row){
 						 if('M'==value){return "<font color=green>菜单<font>"; 
@@ -81,7 +81,14 @@ $(function(){
 
  function openAddDialog(){
 	var url="${ctx}/rbac/menu/enterAddMenu";
-	var options={title:"资源添加",width:600,height:400, url:url,onClosed:function(){reload();}};
+	var options={
+			title:"菜单添加",
+			width:600,
+			height:400, 
+			url:url,
+			onClosed:function(){reload();}
+		
+	};
 	editDialog.open(options);
  }
  function openeditDialog(){
@@ -91,7 +98,7 @@ $(function(){
 		}
 		
 	    //var url="${ctx}/rbac/menu/enterEidtMenu?id="+node.id;
-	    var url="${ctx}/rbac/menu/enterEidtMenu";
+	    var url="${ctx}/rbac/menu/enterEditMenu";
 	    var params={id:node.id};
 		var options={title:"资源编辑",width:600,height:400, url:url,params:params,onClosed:function(){reload();}};
 		editDialog.open(options);
@@ -110,8 +117,8 @@ $(function(){
 <table id="rbacMenuTreeGrid"></table>
 <div id="toolbarDiv" style="padding:4px;height:auto">
 <zht:authButton text="添 加" iconCls="icon-add"  onclick="openAddDialog();" />
-<zht:authButton text="编 辑" iconCls="icon-edit"  onclick="openAddDialog();" />
-<zht:authButton text="删 除" iconCls="icon-remove"  onclick="openAddDialog();" />
+<zht:authButton text="编 辑" iconCls="icon-edit"  onclick="openeditDialog();" />
+<zht:authButton text="删 除" iconCls="icon-remove"  onclick="deleteTreeNode();" />
 </div>	
 </body>
 </html>

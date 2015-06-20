@@ -40,16 +40,13 @@ function loadAllMenus(ajaxMenuUrl){
 	
 }
 function constructStr( str){
-//	str="&nbsp"+str;
 	var lll=str.length ;
 	if(lll<8){
 		for(var i=lll ;i<8;i++){
 			str+="　 ";
-//			str+="　 ";
 		}
 		str+="&nbsp";
 	}
-	//alert(str+"|");
 	return str;
 }
 function logout(b) {
@@ -57,9 +54,7 @@ function logout(b) {
 		cancelCall : function() {alertMsg.close();},
 		okCall : function() {alertMsg.close();
 				var ajaxUrl = "rbac/user/loginout";
-				ZHTAJAX.ajaxTodo(ajaxUrl, {}, function(data) {
-					location.replace("sessiontimeout.jsp");
-				});
+				window.top.location.href=ajaxUrl;
 			}
 		});
 	

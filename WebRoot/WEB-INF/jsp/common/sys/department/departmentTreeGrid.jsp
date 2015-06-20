@@ -32,7 +32,9 @@
 <div id="toolbarDiv" class="easyui-toolbar" style="padding:4px;height:auto">
 <zht:authButton text="添 加" onclick="openAddDialog();" iconCls="icon-add" />
 <zht:authButton text="编 辑" onclick="openeditDialog();" iconCls="icon-edit" />
+<%--
 <zht:authButton text="删 除" onclick="doDelete();" iconCls="icon-remove" />
+ --%>
 </div>
 <!----------------------------------------------------->	
 <script>

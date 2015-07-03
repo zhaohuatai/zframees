@@ -13,12 +13,11 @@ zhtframees 基于springmvc hibernate shiro freemarker easyui 的开发基础框�
 
 二、权限控制
 权限控制基于Apache Shiro框架，提供灵活配置，提供模式包括：
-1.Role Based Aaccess Control：    基于角色的访问控制（适用于常见应用系统）
+1.Role Based Aaccess Control：基于角色的访问控制（适用于常见应用系统）
 2.Resource Based Aaccess Control：基于资源的访问控制（类似ACL，适用于对于权限拦截请求最高的系统）
-3.Url Based Aaccess Control：基于访问路径和目录的控制（适用于开放门户目录）
-  实现部分提供两种实现方式：
+3.Url Based Aaccess Control：基于访问路径和目录的控制（适用于开放门户目录）实现部分提供两种实现方式(5,6)
 4.基于Echcacahe 或者Memory的Session 与Auth 缓存机制（适用于单机应用环境）
-5.基于Redis的分布式或集群环境的Session 与Auth 管理机制（适用于分布式或集群环境）此模式下提供session的Redis统一管理机制  ，类   似Spring Session 或Spring token 无需再集群环境中配置session同步。
+5.基于Redis的分布式或集群环境的Session 与Auth 管理机制（适用于分布式或集群环境）此模式下提供session的Redis统一管理机制 ，类似Spring Session 或Spring token 无需再集群环境中配置session同步。
 6.实际应用系统中提供role-position-department形式的数据模型
 
 三、数据访问

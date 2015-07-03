@@ -7,7 +7,7 @@ zhtframees 基于springmvc hibernate shiro freemarker easyui 的开发基础框�
 1.采用Freemarker模板，生成model类的基本的增删改查逻辑，采用在线编程方式，创建实体类之后可运行代码生成，生成代码手动配置菜单之后可直接测试。
 2.生成前端界面基于Easyui框架生成数据模型的JSP页面片段，页面数据校验、页面提交回调处理；
 3.生成实体结构基于Hibernate，支持ManyToone、OneToOne等关联类型；
-4..生成后端控制层部分，包括异常处理、跳转处理、权限控制、数据接口、jsr303 validator校验；
+4.生成后端控制层部分，包括异常处理、跳转处理、权限控制、数据接口、jsr303 validator校验；
 5.生成后端逻辑部分：包括唯一性校验、可空校验、树形结构父子节点校验、ManyToone空逻辑校验；
 6.生成后端DAO部分：包括数据源切换、分布式多数据源事务控制。
 
